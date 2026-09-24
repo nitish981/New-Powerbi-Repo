@@ -1,0 +1,1382 @@
+table 'All Measures'
+	lineageTag: 2b16cc5e-de89-44ee-9545-873787279f77
+
+	measure 'Total Sales' = SUM('Command Center Funnel  For Review Dashboard'[Total_Sales__Shopify])
+		formatString: #,0
+		lineageTag: 011bbc86-9152-43c6-b4b6-a8913ef9b681
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Gross Sales' = SUM('Command Center Funnel  For Review Dashboard'[Gross_Sales__Shopify])
+		formatString: #,0
+		lineageTag: 9db1d07c-6fd9-4ac3-ba24-0eecc13efaa3
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Meta Spent' = SUM('Command Center Funnel  For Review Dashboard'[Amount_Spent__Facebook_Ads])
+		formatString: #,0
+		lineageTag: e5498c33-2989-4a3f-8a5c-ed75964ed110
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'ROI - Total' = CALCULATE(DIVIDE([Total Sales],[Total Spent]))
+		formatString: 0.0
+		lineageTag: 97fb2cbf-3944-4b80-b8b1-22ba274bd504
+
+	measure 'ROI - Gross' = CALCULATE(DIVIDE([Gross Sales],[Total Spent]))
+		formatString: 0.0
+		lineageTag: 09dee550-5f76-427c-88b0-be812a0fcac9
+
+	measure 'Projected Target' = SUM('Growify''s Sales Incentive'[Sales Target])
+		formatString: #,0
+		lineageTag: bb01ece9-9e22-4001-9ba0-0fe7c6a82801
+
+	measure 'Projected Spent' = ```
+			
+			 var _result = SUM('Growify''s Sales Incentive'[Total Budgets])
+			 RETURN
+			 IF(ISBLANK(_result),0,_result)
+			```
+		lineageTag: cf3e7a86-c0db-470b-9dc6-9386e88afe53
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Google Spent' = SUM('Command Center Funnel  For Review Dashboard'[Cost__Google_Ads])
+		formatString: #,0
+		lineageTag: 9c9bfd01-ad2a-4ff7-b287-2fd7d58e961c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Total Spent' = CALCULATE([Meta Spent] + [Google Spent])
+		formatString: #,0
+		lineageTag: d676b2f2-efaf-4536-9afc-6d19da593c82
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Budget Exhausted %' =
+			
+			DIVIDE(
+			    ([Meta Spent] + [Google Spent]),
+			    [Projected Spent],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 106c7ae9-65df-4a5b-b20e-03d999f71494
+
+	measure Campaign_Category
+		lineageTag: 79efbfce-499f-4d93-ae0b-5ac546d10b6f
+
+	measure 'Sales Range Measure' =
+			
+			VAR NetSalesValue = [Net Sales]  // Your Net Sales measure
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    NetSalesValue >= 0 && NetSalesValue <= 3000, "0-3k",
+			    NetSalesValue >= 3001 && NetSalesValue <= 5000, "03k-05k",
+			    NetSalesValue >= 5001 && NetSalesValue <= 6000, "05k-06k",
+			    NetSalesValue >= 6001 && NetSalesValue <= 7000, "06k-07k",
+			    NetSalesValue >= 7001 && NetSalesValue <= 8000, "07k-08k",
+			    NetSalesValue >= 8001 && NetSalesValue <= 9000, "08k-09k",
+			    NetSalesValue >= 9001 && NetSalesValue <= 10000, "09k-10k",
+			    NetSalesValue >= 10001 && NetSalesValue <= 20000, "10k-20k",
+			    NetSalesValue >= 20001 && NetSalesValue <= 35000, "20k-35k",
+			    NetSalesValue >= 35001 && NetSalesValue <= 50000, "35k-50k",
+			    NetSalesValue >= 50001 && NetSalesValue <= 100000, "50k-1Lakh",
+			    NetSalesValue >= 100001 && NetSalesValue <= 150000, "1Lakh-1.5Lakh",
+			    NetSalesValue > 150001, "1.5Lakh+",
+			    BLANK()
+			)
+		lineageTag: 8723c394-eb2d-4d2b-b284-1007c9d85b70
+
+	measure 'Net Sales' = SUM('Command Center Funnel  For Review Dashboard'[Net_Sales__Shopify])
+		lineageTag: 12ad458d-faf9-46cb-9cc1-5e349253bd6d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure PrevMonthReturns =
+			
+			CALCULATE(
+			    SUM('Command Center Funnel  For Review Dashboard'[Returns__Shopify]),
+			    FILTER(
+			        'Command Center Funnel  For Review Dashboard',
+			        DATEDIFF('Command Center Funnel  For Review Dashboard'[Order_Created_At__Shopify] , 'Command Center Funnel  For Review Dashboard'[Date], MONTH) >= 1
+			    )
+			)
+		lineageTag: 2074d443-4c86-4bf5-98c9-6dfc3c32d972
+
+		formatStringDefinition = ""
+
+	measure 'Actual Sales' = [Total Sales] - [PrevMonthReturns]
+		formatString: #,0
+		lineageTag: f7560219-5c1b-4890-8acc-1feebe5a6ba4
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'ROI - Actual' = DIVIDE([Actual Sales] , [Total Spent])
+		lineageTag: 7b00dcff-c38e-4d91-a2e4-99879584320f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MoM % (Same Date Range)' =
+			
+			VAR MinDate = MIN('Shopify Overall Share'[Date])
+			VAR MaxDate = MAX('Shopify Overall Share'[Date])
+			VAR CurrentSales =
+			    CALCULATE(
+			        SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+			        DATESBETWEEN('Shopify Overall Share'[Date], MinDate, MaxDate)
+			    )
+			VAR PrevSales =
+			    CALCULATE(
+			        SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+			        DATESBETWEEN(
+			            'Shopify Overall Share'[Date],
+			            EDATE(MinDate, -1),
+			            EDATE(MaxDate, -1)
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevSales),
+			    DIVIDE(CurrentSales - PrevSales, PrevSales),
+			    BLANK()
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: d749d78a-a138-413a-9374-58e4fe988644
+
+	measure 'Growth Target' = SUM('Growify''s Sales Incentive'[Growth Target])
+		formatString: #,0
+		lineageTag: 5bd28c03-9e7b-46fb-b6d5-68674acf1ae8
+
+	measure 'Growth Budget' = SUM('Growify''s Sales Incentive'[Growth Budget])
+		formatString: #,0
+		lineageTag: c21aab3e-ad09-441c-af20-d05a1acfa0ba
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'MTD Target (Growth)' = (DIVIDE([Growth Target],MAX(DateTable[DaysInMonth])))*MAX(DateTable[Ndays])
+		formatString: #,0
+		lineageTag: d6c475f2-f66e-40cf-bc50-f90de9ff132f
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Sales % Achieved' = DIVIDE([Actual Sales], [Projected Target])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: c12923d5-a393-48b4-a9e1-d94116542370
+
+	measure 'Achieved Differential' = [Actual Sales]-[MTD Target (Growth)]
+		formatString: #,0
+		lineageTag: bf7923ca-bc10-40b1-9f9f-158fb58a7999
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Meta Budget' =
+			
+			var _result = SUM('Growify''s Sales Incentive'[Facebook Budget])
+			RETURN
+			IF(ISBLANK(_result),0,_result)
+		formatString: #,0
+		lineageTag: 9b9b800f-188c-4808-be71-1d92c665a4de
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Store Sales' = SUM('Store Sales'[Net Sales])
+		lineageTag: b5349556-98db-410d-bcd1-eae88bc23323
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Budget Exhausted % (Growth)' =
+			
+			DIVIDE(
+			    ([Meta Spent] + [Google Spent]),
+			    [Growth Budget],
+			    0
+			)
+		lineageTag: 3dea0340-2644-46b0-b762-a69937e40729
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales % Achieved (Growth)' = DIVIDE([Actual + Store Sales], [Growth Target])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 989d747a-bb48-4f05-9f65-ca87d37f8f42
+
+	measure 'Achieved Differential (Projected)' = [Actual Sales]-[MTD Target (Projected)]
+		lineageTag: 38bbe8d8-7244-41dd-85e6-b69142368bae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Target (Projected)' = (DIVIDE([Projected Target],MAX(DateTable[DaysInMonth])))*MAX(DateTable[Ndays])
+		lineageTag: 596a82bb-0d02-4096-8227-0461592c68ad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Store + Total Sales' = ```
+			SUM('Store Sales'[Net Sales]) + SUM('Command Center Funnel  For Review Dashboard'[Total_Sales__Shopify]) 
+			```
+		formatString: #,0
+		lineageTag: 7db8c5c0-6f35-4989-b19b-97a13c3c3d08
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Actual + Store Sales' = ([Total Sales] - [PrevMonthReturns]) + SUM('Store Sales'[Net Sales])
+		formatString: #,0
+		lineageTag: e3adebd3-3d73-40fa-aea1-2a981e132ae5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Store - ROI - Actual' = DIVIDE([Actual + Store Sales] , [Total Spent])
+		lineageTag: 41bd5c1e-de31-4e7e-9dda-dced5bd109ff
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ROI Total- Store' = ```
+			CALCULATE(DIVIDE([Store + Total Sales],[Total Spent]))        
+			```
+		lineageTag: aa1c4ec4-00d8-4c6f-8dee-00fefddd49fd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Target Incentive' = ```
+			(
+			VAR RateTable =
+			    ADDCOLUMNS(
+			        'Growify''s Sales Incentive',
+			
+			        "Rate",
+			        VAR GT = 'Growify''s Sales Incentive'[Growth Target]
+			        VAR GB = 'Growify''s Sales Incentive'[Growth Budget]
+			        VAR Brand = 'Growify''s Sales Incentive'[Brands]
+			        VAR YM = 'Growify''s Sales Incentive'[Date]
+			
+			        RETURN
+			        SWITCH(
+			            TRUE(),
+			
+			            /* NOTEBOOK */
+			            CONTAINSSTRING(Brand, "Notebook") && GT < 2500000, 0.03,
+			            CONTAINSSTRING(Brand, "Notebook") && GT >= 2500000 && GT < 3500000, 0.04,
+			            CONTAINSSTRING(Brand, "Notebook") && GT >= 3500000, 0.05,
+			
+			                        /* SAMANT CHAUHAN */
+			            CONTAINSSTRING(Brand, "Samant Chauhan") && GT > 5000000, ((GT - 5000000) * 0.05) / GT,
+			
+			                        /* AUM */
+			            CONTAINSSTRING(Brand, "AUM") && GT/GB < 3, 0.05,
+			            CONTAINSSTRING(Brand, "AUM") && GT/GB > 3 && GT/GB < 4, 0.06,
+			            CONTAINSSTRING(Brand, "AUM") && GT/GB > 4 && GT/GB < 5, 0.07,
+			            CONTAINSSTRING(Brand, "AUM") && GT/GB > 5 && GT/GB < 6, 0.08,
+			            CONTAINSSTRING(Brand, "AUM") && GT/GB > 6 && GT/GB < 7, 0.09,
+			            CONTAINSSTRING(Brand, "AUM") && GT/GB > 7 , 0.1,
+			            
+			            /* RAJI RAMNIQ (SLAB-BASED INCREMENTAL) */
+			            CONTAINSSTRING(Brand, "Raji Ramniq") && GT <= 1000000, 0,
+			            CONTAINSSTRING(Brand, "Raji Ramniq") && GT > 1000000 && GT <= 3000000, 
+			                ((GT - 1000000) * 0.04) / GT,
+			            CONTAINSSTRING(Brand, "Raji Ramniq") && GT > 3000000 && GT <= 5000000, 
+			                (((GT - 3000000) * 0.05) + (2000000 * 0.04)) / GT,
+			            CONTAINSSTRING(Brand, "Raji Ramniq") && GT > 5000000, 
+			                (((GT - 5000000) * 0.06) + (2000000 * 0.05) + (2000000 * 0.04)) / GT,
+			            
+			            
+			            /* ATHLETIFREAK USA */
+			            CONTAINSSTRING(Brand, "Athletifreak USA"), 0.04,
+			
+			            /* CALLING JUNE */
+			            CONTAINSSTRING(Brand, "Calling June") && GT / GB >= 3, 0.065,
+			            CONTAINSSTRING(Brand, "Calling June") && GT / GB >= 2.5, 0.04,
+			
+			            /* RIDHI MEHRA */
+			            CONTAINSSTRING(Brand, "Ridhi Mehra"), 0.08,
+			
+			            /* AEROHAVEN */
+			            CONTAINSSTRING(Brand, "Aerohaven") && GT <= 1500000, 0.03,
+			            CONTAINSSTRING(Brand, "Aerohaven") && GT > 1500000 && GT <= 3000000, 0.04,
+			            CONTAINSSTRING(Brand, "Aerohaven") && GT > 3000000, 0.05,
+			
+			            /* TARUN TAHILIANI */
+			            CONTAINSSTRING(Brand, "Tarun Tahiliani"), 0.05,
+			
+			            /* PAYAL SINGHAL */
+			            CONTAINSSTRING(Brand, "Payal Singhal"), 0.06,
+			
+			            /* DRZYA */
+			            CONTAINSSTRING(Brand, "Drzya"), 0.04,
+			
+			            /* ZABELLA */
+			            CONTAINSSTRING(Brand, "Zabella") && GT > 1500000, 0.04,
+			
+			            /* ROZA PRET */
+			            CONTAINSSTRING(Brand, "Roza Pret") && GT > 3500000 && GT <= 6000000, 0.035,
+			            CONTAINSSTRING(Brand, "Roza Pret") && GT > 6000000 && GT <= 10000000, 0.045,
+			            CONTAINSSTRING(Brand, "Roza Pret") && GT > 10000000, 0.055,
+			
+			            /* BEGUM PRET */
+			            CONTAINSSTRING(Brand, "Begum Pret") && GT > 2000000 && GT <= 4000000, 0.04,
+			            CONTAINSSTRING(Brand, "Begum Pret") && GT > 4000000 && GT <= 6000000, 0.05,
+			            CONTAINSSTRING(Brand, "Begum Pret") && GT > 6000000, 0.06,
+			
+			            /* SUNEET VARMA */
+			            CONTAINSSTRING(Brand, "Suneet Varma") && GT <= 5000000, 0.06,
+			            CONTAINSSTRING(Brand, "Suneet Varma") && GT > 5000000 && GT <= 10000000, 0.05,
+			            CONTAINSSTRING(Brand, "Suneet Varma") && GT > 10000000, 0.04,
+			
+			            /* NIDHIKA SHEKHAR */
+			            CONTAINSSTRING(Brand, "Nidhika Shekhar") && GT <= 1000000, 0.04,
+			            CONTAINSSTRING(Brand, "Nidhika Shekhar") && GT > 1000000 && GT <= 3000000, 0.05,
+			            CONTAINSSTRING(Brand, "Nidhika Shekhar") && GT > 3000000, 0.06,
+			
+			            /* SAFAA */
+			            CONTAINSSTRING(Brand, "Safaa") &&
+			            MONTH(YM) > 7 &&
+			            GT - 900000 >= 2500000, 0.07,
+			
+			            CONTAINSSTRING(Brand, "Safaa") &&
+			            MONTH(YM) > 7 &&
+			            GT - 900000 >= 900000, 0.05,
+			
+			            CONTAINSSTRING(Brand, "Safaa") && GT >= 2500000, 0.07,
+			            CONTAINSSTRING(Brand, "Safaa") && GT >= 900000, 0.05,
+			
+			            /* DEFAULT */
+			            'Growify''s Sales Incentive'[Growify's Sales Incentive %]
+			        )
+			    )
+			
+			RETURN
+			COALESCE(
+			    SUMX(
+			        RateTable,
+			        [Rate] * 'Growify''s Sales Incentive'[Growth Target]
+			    ),
+			    0
+			))/1.22
+			```
+		formatString: #,0
+		lineageTag: fa4d1b47-36e7-442d-b4c1-3fbc2ffb726e
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Shipping Charges' = ```
+			
+			SUMX (
+			    VALUES ( 'Growify''s Sales Incentive'[Brands] ),
+			    VAR Gross_Sale = [Gross Sales]
+			    VAR Brand = SELECTEDVALUE ( 'Growify''s Sales Incentive'[Brands] )
+			    VAR Shopify_Shipping =
+			        SUM ( 'Command Center Funnel  For Review Dashboard'[Shipping__Shopify] )
+			    RETURN
+			        SWITCH (
+			            TRUE (),
+			            Brand IN { "Zabella", "Angad Singh" }, Gross_Sale * 0.06,
+			            Shopify_Shipping
+			        )
+			)
+			
+			```
+		lineageTag: 47a305ca-68a7-44ba-a3e0-a203b50a5b61
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cal. Net Sales' = ```
+			([Store + Total Sales]-[Shipping Charges])/1.18 
+			```
+		lineageTag: ba5129a9-d9b6-4dd3-b85d-1adadc685d56
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Incentive Amount' = ```
+			
+			SUMX(
+			    VALUES('Growify''s Sales Incentive'[Brands]),
+			    VAR BrandName = 'Growify''s Sales Incentive'[Brands]
+			    VAR NS = [Cal. Net Sales]
+			    VAR Sales = CALCULATE(SUM('Command Center Funnel  For Review Dashboard'[Net_Sales__Shopify]) + SUM('Store Sales'[Net Sales]))
+			    VAR TSales = CALCULATE(SUM('Command Center Funnel  For Review Dashboard'[Total_Sales__Shopify]) + SUM('Store Sales'[Net Sales]))
+			    VAR Store = [Store Sales] / 1.18
+			    VAR ClientTarget = [Client Target]
+			    VAR Ads = [Total Spent]
+			    VAR TotalSales = NS
+			    VAR SI = 
+			        AVERAGEX(
+			            VALUES('Growify''s Sales Incentive'[Date]), 
+			            [Growify's Sales Incentive %]
+			        )
+			    
+			    -- ALL mid-switch variables moved up here to prevent syntax crashes
+			    VAR ROI = DIVIDE(TSales, Ads)
+			    VAR Achievement = DIVIDE(Sales, ClientTarget)
+			    VAR TTAchievement = DIVIDE(TSales, ClientTarget)
+			    
+			    RETURN
+			    SWITCH(
+			        TRUE(),
+			
+			        BrandName = "Samant Chauhan",
+			        IF(Sales > 5000000, (NS - 5000000) * 0.05, 0),
+			
+			        BrandName = "AUM",
+			        SWITCH(
+			            TRUE(),
+			            ROI < 3, NS * 0.05,
+			            ROI >= 3 && ROI < 4, NS * 0.06,
+			            ROI >= 4 && ROI < 5, NS * 0.07,
+			            ROI >= 5 && ROI < 6, NS * 0.08,
+			            ROI >= 6 && ROI < 7, NS * 0.09,
+			            ROI >= 7,  NS * 0.1                    
+			        ),
+			    
+			        BrandName = "Outhouse Jewellery",
+			        IF(Sales > 8000000, (NS - 8000000) * 0.04, 0),
+			
+			        BrandName = "AFEW",
+			        IF(NS > 0, NS * 0.08, 0),
+			
+			        /* ---------------- PAYAL SINGHAL ---------------- */
+			        BrandName = "Payal Singhal",
+			        IF(NS * 0.06 >= 75000, NS * 0.06, 75000),
+			
+			        /* ---------------- RIDHI MEHRA ---------------- */
+			        BrandName = "Ridhi Mehra",
+			        SWITCH(
+			            TRUE(),
+			            Achievement < 1, 0.05 * NS,
+			            Achievement = 1, 0.06 * NS,
+			            Achievement > 1 && Achievement <= 1.2, 0.07 * NS,
+			            Achievement > 1.2, 0.08 * NS
+			        ),
+			
+			        /* ---------------- DRZYA ---------------- */
+			        BrandName = "Drzya",
+			        SWITCH(
+			            TRUE(),
+			            NS <= 700000, 0,
+			            NS <= 1200000, (NS - 700000) * 0.01,
+			            NS <= 1800000, (NS - 1200000) * 0.02 + (500000 * 0.01),
+			            NS <= 2500000, (NS - 1800000) * 0.03 + (600000 * 0.02) + (500000 * 0.01),
+			            NS > 2500000,  (NS - 2500000) * 0.04 + (700000 * 0.03) + (600000 * 0.02) + (500000 * 0.01)
+			        ),
+			
+			        /* ---------------- RAJI RAMNIQ (SLAB-BASED) ---------------- */
+			        BrandName = "Raji Ramniq",
+			        SWITCH(
+			            TRUE(),
+			            NS <= 1000000, 0,
+			            NS <= 3000000, (NS - 1000000) * 0.04,
+			            NS <= 5000000, (NS - 3000000) * 0.05 + (2000000 * 0.04),
+			            NS > 5000000,  (NS - 5000000) * 0.06 + (2000000 * 0.05) + (2000000 * 0.04)
+			        ),
+			        
+			        BrandName = "Roza Pret",
+			        SWITCH(
+			            TRUE(),
+			            NS > 3500000 && NS <= 6000000, ((NS - 3500000) / 1.18) * 0.035,
+			            NS > 6000000 && NS <= 10000000, ((6000000 - 3500000) / 1.18) * 0.035 + ((NS - 6000000) / 1.18) * 0.045,
+			            NS > 10000000, ((6000000 - 3500000) / 1.18) * 0.035 + ((10000000 - 6000000) / 1.18) * 0.045 + ((NS - 10000000) / 1.18) * 0.055
+			        ),
+			            
+			        BrandName = "Begum Pret",
+			     
+			        SWITCH(
+			            TRUE(),
+			            NS > 2000000 && NS <= 4000000, (NS - 2000000) * 0.04,
+			            NS > 4000000 && NS <= 6000000, (4000000 - 2000000) * 0.04 + ((NS - 4000000)) * 0.05,
+			            NS > 6000000, ((4000000 - 2000000)) * 0.04 + ((6000000 - 4000000)) * 0.05 + ((NS - 6000000)) * 0.06
+			        ),
+			            
+			        /* ---------------- TARUN TAHILIANI ---------------- */
+			        BrandName = "Tarun Tahiliani",
+			        SWITCH(
+			            TRUE(),
+			            TTAchievement < 0.8, 0.04 * TotalSales,
+			            TTAchievement < 1,   0.05 * TotalSales,
+			            TTAchievement < 1.1, 0.06 * TotalSales,
+			            TTAchievement < 1.25, 0.07 * TotalSales,
+			            TTAchievement >= 1.25, 0.08 * TotalSales
+			        ),
+			
+			        /* ---------------- SAFaa ---------------- */
+			        BrandName = "Safaa World",
+			        SWITCH(
+			            TRUE(),
+			            NS < 900000, 0,
+			            NS < 2500000, (NS - 900000) * 0.05,
+			            NS >= 2500000, (NS - 2500000) * 0.07 + (1600000 * 0.05)
+			        ),
+			
+			        BrandName = "Sia Bridal",
+			        IF(TotalSales > 0, SI * Sales, 0),
+			
+			        BrandName = "Shaira Fashion Dubai",
+			        IF(TotalSales > 0, SI * (Sales / 1.05), 0),
+			            
+			        /* ---------------- DEFAULT ---------------- */
+			        SI * TotalSales
+			    )
+			)
+			```
+		lineageTag: 4081fef7-9fd0-44ed-a2e6-90635d00d87a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Client Target' = sum('Growify''s Sales Incentive'[Client Target])
+		formatString: 0
+		lineageTag: 10d8b42e-e79c-4bde-98d5-3415a1fcae9d
+
+	measure 'Growify''s Sales Incentive %' = SUM('Growify''s Sales Incentive'[Growify's Sales Incentive %])
+		formatString: 0
+		lineageTag: 33f52c91-79a2-448e-96fe-eaf6a06a6b09
+
+	measure Measure = SUM('Growify''s Sales Incentive'[Growify's Sales Incentive %])*[Total Sales]
+		lineageTag: 547aeffc-d04c-454b-aec0-fefc884fb41e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Growify Earnings Achieved %' =
+			
+			DIVIDE([Current Earnings], [Target Earnings], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f8698756-bea5-4462-aba0-428ead391928
+
+	measure 'Team Incentive Amount' =
+			
+			VAR Achieved = [Growify Earnings Achieved %]
+			VAR SIAmount = [Current Earnings]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        Achieved > 1.20, SIAmount * (0.05 * 0.65),        -- 5%
+			        Achieved > 1.00, SIAmount * (0.04 * 0.65),        -- 4%
+			        Achieved > 0.90, SIAmount * (0.03 * 0.65),        -- 3%
+			        Achieved > 0.85, SIAmount * (0.015 * 0.65),       -- 1.5%
+			        0 -- Default if <= 85%
+			    )
+		lineageTag: 13b2da31-a124-4a6c-beed-9910c3af9b5f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Team Incentive At 85%' = 0.015 * 0.65 * [Target Earnings]*0.85
+		formatString: #,0
+		lineageTag: 65bf9132-ba78-4bd9-84ef-6f6e136a696d
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Team Incentive At 90%' = 0.03 * 0.65 * [Target Earnings]*0.9
+		formatString: #,0
+		lineageTag: 39eb9fc0-db89-49a3-a3b0-7c9bde8eed86
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Team Incentive At 100%' = 0.04 * 0.65 * [Target Earnings]
+		formatString: #,0
+		lineageTag: 1b927c1d-2beb-4f7d-8ab6-ed07b8fbb6b8
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Team Incentive At 120%' = 0.05 * 0.65 * [Target Earnings]*1.2
+		formatString: #,0
+		lineageTag: 77d1d1ec-36c9-4037-916c-c68ea6ee301c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Target Earnings' = [Target Incentive] + SUM(Teamwise_revenue[Retainer Deal (New)])
+		lineageTag: 76ce1453-e14e-4240-af5d-c564a060c972
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Earnings' = ```
+			[Sales Incentive Amount] + [Retainer]
+			
+			```
+		formatString: #,0
+		lineageTag: 846d52fa-f431-44b3-a59e-d1315b36a91f
+
+	measure 'Minimum Earnings Required (85%)' = [Target Earnings]*0.85
+		lineageTag: b08adaf1-32ba-4a3d-b635-45381c9d3533
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Difference (MTD(85%) vs Current)' = [Current Earnings]-[Minimum Earnings Required (85%)]
+		lineageTag: 87525ff7-a273-4cdf-8e38-5f5c8eb7bad3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Target Earnings' = (DIVIDE([Target Earnings],MAX(DateTable[DaysInMonth])))*MAX(DateTable[Ndays])
+		lineageTag: 9096a9c0-8687-48d7-b2ce-29458db84de5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Earnings Differential' = [Current Earnings]-[MTD Target Earnings]
+		lineageTag: 38ff91bc-13fb-4f5f-86ba-ba6f1418fc46
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BM Incentive' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[Brand Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive Amount],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: d5e512bf-69c9-4bd2-b96e-251847b7df18
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Members Count' = ```
+			
+			VAR BrandMgrs =
+			    FILTER(
+			        DISTINCT('Growify''s Sales Incentive'[Brand Managers]),
+			        NOT ISBLANK('Growify''s Sales Incentive'[Brand Managers])
+			    )
+			
+			VAR MetaMgrs =
+			    FILTER(
+			        DISTINCT('Growify''s Sales Incentive'[FB Managers]),
+			        NOT ISBLANK('Growify''s Sales Incentive'[FB Managers])
+			    )
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			VAR UniqueList =
+			    DISTINCT(UNION(BrandMgrs, MetaMgrs))
+			
+			
+			VAR LeadPresent =
+			    COUNTROWS(
+			        INTERSECT(
+			            UniqueList,
+			            TeamLeads
+			        )
+			    ) > 0
+			
+			RETURN
+			IF(
+			    LeadPresent,
+			    COUNTROWS(UniqueList),
+			    COUNTROWS(UniqueList) + 1
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 9be4c6da-08a0-40a8-87d9-4be6f58835d5
+
+	measure 'BM Incentive At 85 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[Brand Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 85%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[Brand Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: d348004b-eb6c-40bd-aebc-2d95c2039462
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BM Incentive At 90 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[Brand Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 90%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[Brand Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 7206f424-0e3b-4448-8e92-c9fbb75312fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BM Incentive At 100 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[Brand Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 100%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[Brand Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: daeb17b3-a0eb-4703-b185-54aa3be6a91a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BM Incentive At 120 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[Brand Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 120%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[Brand Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 61dc5eec-7528-4070-bcb4-31cd7189b75d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Meta Person Incentive' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[FB Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive Amount],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 629aead7-fd03-4266-b033-c13b6c85b10b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Meta Incentive At 85 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[FB Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 85%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: f4121b65-23ec-46ed-97b3-74d55f84b7ae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Meta Incentive At 90 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[FB Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 90%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 01609286-c3e1-4762-a953-429cbf55bac9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Meta Incentive At 100 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[FB Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 100%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 90a7dd25-2bb2-4bda-9f34-39e2b3d4fa86
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Meta Incentive At 120 %' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[FB Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Team Incentive At 120%],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 599d71a3-b148-407e-b892-4027c2430d7f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Earnings Required (90%)' = [Target Earnings]*0.90
+		formatString: #,0
+		lineageTag: 42f2dcde-5259-4dad-82de-4354649911ae
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Earnings Required (120%)' = [Target Earnings]*1.2
+		formatString: #,0
+		lineageTag: d539508a-2892-4bf8-bac8-d3fa40920321
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Retainer = ```
+			SUM('Growify''s Sales Incentive'[Retainer Deal])
+			
+			```
+		formatString: #,0
+		lineageTag: 494a08a6-c905-4303-922d-5a979e92c23d
+
+	measure 'Incentive Earnings Achieved %' =
+			
+			DIVIDE([Sales Incentive Amount], [Target Incentive], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 5737c971-a602-4946-b94a-e233f7fd3bf8
+
+	measure Client_Clean = ```
+			
+			SWITCH (
+			    TRUE(),
+			    VAR Clients = SELECTEDVALUE('Profitability - Dashboard - 2022_26 (2)'[Clients])
+			    CONTAINSSTRING ( [Clients], "Drzya" ), "Drzya",
+			    CONTAINSSTRING ( [Clients], "Mahima Mahajan" ), "Mahima Mahajan",
+			    CONTAINSSTRING ( [Clients], "Tarun Tahalini" ), "Tarun Tahiliani",
+			    CONTAINSSTRING ( [Clients], "Ridhi Mehra- Edge Fashion" ), "Ridhi Mehra",
+			    CONTAINSSTRING ( [Clients], "Meena Bazaar" ), "Meena Bazaar",
+			    CONTAINSSTRING ( [Clients], "Shaira Fashion - Dubai" ), "Shaira Fashion Dubai",
+			    CONTAINSSTRING ( [Clients], "Image International" ), "Image 1993",
+			    CONTAINSSTRING ( [Clients], "Puneet Kapoor Label" ), "Puneet Kapoor",
+			    CONTAINSSTRING ( [Clients], "Safaa" ), "Safaa World",
+			    CONTAINSSTRING ( [Clients], "H&N - Lint Clothing Pvt Ltd" ), "Hemant and Nandita",
+			    CONTAINSSTRING ( [Clients], "Flirtatious - Shivaaye International" ), "Flirtatious",
+			    CONTAINSSTRING ( [Clients], "Dusala - One Couture" ), "Dusala",
+			    CONTAINSSTRING ( [Clients], "Aisha Rao - ARDS Design" ), "Aisha Rao",
+			    CONTAINSSTRING ( [Clients], "Gazal Gupta" ), "Gazal Gupta",
+			    CONTAINSSTRING ( [Clients], "Limited Etd - NM Sports Fashion Concepts Pvt.Ltd." ), "Limited EDT",
+			    CONTAINSSTRING ( [Clients], "House of Deepthi" ), "House of Deepthi",
+			    CONTAINSSTRING ( [Clients], "Samar Fashion - Chamee & Palak" ), "Chamee and Palak",
+			    CONTAINSSTRING ( [Clients], "Soltee - Sulakshana Monga" ), "Sulakshana Monga",
+			    CONTAINSSTRING ( [Clients], "Bairaas- Shivani Creation Pvt Ltd" ), "BairaasB",
+			    CONTAINSSTRING ( [Clients], "Calling June - S.A.N. Intl Pvt. Ltd." ), "Calling June",
+			    CONTAINSSTRING ( [Clients], "Shahin Mannan- New" ), "Shahin Manan",
+			    CONTAINSSTRING ( [Clients], "Neha Chopra - Haands Free" ), "Haandsfree",
+			    CONTAINSSTRING ( [Clients], "Sanam Lalwani" ), "Sanam Lalwani",
+			    CONTAINSSTRING ( [Clients], "Mandira Wirk - Mandira Wirk Designs LLP" ), "Mandira Wirk",
+			    CONTAINSSTRING ( [Clients], "Bunka Studio- Bunka Studio Pvt Ltd" ), "Bunka",
+			    CONTAINSSTRING ( [Clients], "Aneesh Agarwaal Design" ), "Aneesh Agarwal",
+			    CONTAINSSTRING ( [Clients], "Diya Rajvvir - J A Taxtiles" ), "Diyarajvvir",
+			    CONTAINSSTRING ( [Clients], "Sukriti and Aakriti - Shivaaye International" ), "Sukriti and Aakriti",
+			    CONTAINSSTRING ( [Clients], "Horizon Exports & Imports - Koakh" ), "Koakh",
+			    CONTAINSSTRING ( [Clients], "GANPATI EXPOTS" ), "Ganpati Bridal Wear",
+			    CONTAINSSTRING ( [Clients], "Toosh Kashmir" ), "Toosh Kashmir",
+			    CONTAINSSTRING ( [Clients], "Shikha Amish Jariwala - Shikha Mehta" ), "Shikha Mehta",
+			    CONTAINSSTRING ( [Clients], "Leather Garden - Amazone Leather Pvt Ltd" ), "The Leather Garden",
+			    CONTAINSSTRING ( [Clients], "Aulyra Design Private Limited - Aulerth" ), "Aulerth",
+			    CONTAINSSTRING ( [Clients], "I Am Design" ), "I am Design",
+			    CONTAINSSTRING ( [Clients], "MEHAK MURPANA" ), "Mehak Murpana",
+			    CONTAINSSTRING ( [Clients], "SROTA PRET & COUTURE" ), "Srota",
+			    CONTAINSSTRING ( [Clients], "Dimple Amani - KRU Ventures Ltd - (Jay)" ), "Dimple Amani",
+			    CONTAINSSTRING ( [Clients], "Jewel Boutique - Preeti Mohan" ), "Preeti Mohan",
+			    CONTAINSSTRING ( [Clients], "Radheya Apparels Pvt Ltd - Ribionwear" ), "Ribionwear",
+			    CONTAINSSTRING ( [Clients], "Hazoorilal & Sons Jewellers Pvt Ltd" ), "Hazoorilal IND",
+			    CONTAINSSTRING ( [Clients], "Gaurav Gupta- REFLECT SCULPT PVT LTD" ), "Gaurav Gupta",
+			    CONTAINSSTRING ( [Clients], "Anju Modi - Anjuman Brand Designs Pvt. Ltd." ), "Anju Modi",
+			    CONTAINSSTRING ( [Clients], "Maison Shefali - SHEFALI JAIN" ), "Maison Shefali",
+			    CONTAINSSTRING ( [Clients], "Art By Gayatri" ) || CONTAINSSTRING ( [Clients], "ABG" ), "Art by Gayatri",
+			    CONTAINSSTRING ( [Clients], "GAIA" ), "Gaia by Archie",
+			    CONTAINSSTRING ( [Clients], "Mimamsaa" ), "Mimamsaa",
+			    CONTAINSSTRING ( [Clients], "Melange" ), "Melange",
+			
+			    [Clients]   -- fallback (same as ELSE Clients)
+			)
+			
+			```
+		lineageTag: 45b773dc-5847-4243-a453-b0b73d983cd3
+
+	measure 'Net Current Earnings' = SUM('Profitability - Dashboard - 2022_26 (2)'[Gross])/1.18
+		formatString: #,0
+		lineageTag: addd294a-180b-490d-9061-ce64ef006619
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Net Team Incentive Amount' =
+			
+			VAR Achieved = [Sales % Achieved (Growth)]
+			VAR SIAmount = [Net Current Earnings]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        Achieved > 1.20, SIAmount * (0.05 * 0.65),        -- 5%
+			        Achieved > 1.00, SIAmount * (0.04 * 0.65),        -- 4%
+			        Achieved > 0.90, SIAmount * (0.03 * 0.65),        -- 3%
+			        Achieved > 0.85, SIAmount * (0.015 * 0.65),       -- 1.5%
+			        0 -- Default if <= 85%
+			    )
+		formatString: #,0
+		lineageTag: 19b1a897-e492-41ac-9df3-f72e842e7053
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'First Revenue Date' = ```
+			
+			VAR _Client =
+			    SELECTEDVALUE('Profitability - Dashboard - 2022_26 (2)'[Brand Name])
+			RETURN
+			CALCULATE(
+			    MIN('Profitability - Dashboard - 2022_26 (2)'[Date]),
+			    FILTER(
+			        ALL('Profitability - Dashboard - 2022_26 (2)'),
+			        'Profitability - Dashboard - 2022_26 (2)'[Brand Name] = _Client &&
+			        [Net Current Earnings] > 0
+			    )
+			)
+			
+			```
+		formatString: General Date
+		lineageTag: 5994b363-8395-4a5e-a47a-e0bf20e99af7
+
+	measure 'Is New Client' = ```
+			
+			VAR FirstDate =
+			    CALCULATE(
+			        MIN('Profitability - Dashboard - 2022_26 (2)'[Date]),
+			        FILTER(
+			            ALL('Profitability - Dashboard - 2022_26 (2)'),
+			            'Profitability - Dashboard - 2022_26 (2)'[Brand Name]
+			                = EARLIER('Profitability - Dashboard - 2022_26 (2)') &&
+			            'Profitability - Dashboard - 2022_26 (2)'[Net_Current_Earning] > 0
+			        )
+			    )
+			RETURN
+			IF(
+			    'Profitability - Dashboard - 2022_26 (2)'[Date] = FirstDate &&
+			    'Profitability - Dashboard - 2022_26 (2)'[Net_Current_Earning] > 0,
+			    "New Client",
+			    "Old Client"
+			)
+			
+			```
+		lineageTag: fd6bb964-d1e2-4156-ab19-d6ef34928bf3
+
+	measure 'Monthly - New Clients' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT('Profitability - Dashboard - 2022_26 (2)'[Brand Name]),
+			    FILTER(
+			        VALUES('Profitability - Dashboard - 2022_26 (2)'[Brand Name]),
+			        [First Revenue Date] >= MIN('DateTable'[Date].[Date]) &&
+			        [First Revenue Date] <= MAX('DateTable'[Date].[Date])
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: eca5c179-5f74-4a66-91cf-7af9b97a8c91
+
+	measure 'Growify Earnings Achieved Net %' =
+			
+			DIVIDE([Net Current Earnings], [Target Earnings], 0)
+		lineageTag: f832abe6-0f54-4804-9059-ba5d690ffb02
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Retainer Category' = ```
+			
+			VAR Retainer =
+			    SUM ( 'Growify''s Sales Incentive'[Retainer Deal] )
+			RETURN
+			    SWITCH (
+			        TRUE(),
+			        Retainer < 75000, "Low",
+			        Retainer < 150000, "Mid",
+			        "High"
+			    )
+			
+			```
+		lineageTag: d7c9f994-d6e4-4818-8bc0-bcd3f54a4ad1
+
+	measure 'BM Net Incentive' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[Brand Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Net Team Incentive Amount],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: 9b967409-dc9a-4cd7-8048-6d338344126d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Earnings Differential' = [Net Current Earnings]-[MTD Target Earnings]
+		lineageTag: 2d8eb9cd-6a04-47bb-8269-bae26dd99814
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Meta Person Incentive (Net)' = ```
+			
+			-- 1. Identify the Brand Manager currently selected in your slicer
+			VAR SelectedManager = SELECTEDVALUE('Growify''s Sales Incentive'[FB Managers])
+			
+			-- 2. Define your 4 Team Leads (Replace with actual names)
+			VAR TeamLeads = {"Vishal", "Shravya", "Deepak", "Arpit"}
+			
+			-- 3. Check if the selected manager is one of the leads
+			VAR IsLead = SelectedManager IN TeamLeads
+			
+			-- 4. Calculate the pool and the count for the denominator
+			VAR TotalPool = CALCULATE([Net Team Incentive Amount],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR TotalStaffCount = CALCULATE([Total Members Count],REMOVEFILTERS('Growify''s Sales Incentive'[Brand Managers],'Growify''s Sales Incentive'[FB Managers]))
+			VAR MemberDenominator = TotalStaffCount - 1
+			
+			RETURN
+			
+			-- Otherwise, they are a member: they get the 80% split (if a lead exists) 
+			-- or a standard split if the manager isn't a lead
+			IF(
+			    IsLead, 
+			    TotalPool * 0.20,
+			    (TotalPool * 0.80) / MemberDenominator
+			)
+			```
+		lineageTag: f45e45be-579a-4954-96f9-d6a8069213b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Team Achieved Earning %' = [Net Revenue]/[Target Earnings]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 06667331-07ee-4b74-8c7b-ecb8e8f55eca
+
+	measure 'Net Team Incentive Amount (New)' =
+			
+			VAR Achieved = [Growify Earnings Achieved Net (Rev) %]
+			VAR SIAmount = [Net Revenue]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        Achieved > 1.20, SIAmount * (0.05 * 0.65),        -- 5%
+			        Achieved > 1.00, SIAmount * (0.04 * 0.65),        -- 4%
+			        Achieved > 0.90, SIAmount * (0.03 * 0.65),        -- 3%
+			        Achieved > 0.85, SIAmount * (0.015 * 0.65),       -- 1.5%
+			        0 -- Default if <= 85%
+			    )
+		lineageTag: 457797cd-f293-406b-8eff-d1afaddcb5fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Growify Earnings Achieved Net (Rev) %' =
+			
+			DIVIDE([Net Revenue], [Target Earnings], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 88147764-ee51-47bc-b630-7c4fa2ecb161
+
+	measure 'Team Achieved Incentive %' = [Net Incentive (Rev)]/[Target Incentive]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 298ef6fe-437b-4964-a20d-339472fdc3b0
+
+	measure 'Team Achieved Retainer %' = SUM(Teamwise_revenue[Retainer Deal (New)])/SUM(Teamwise_revenue[Retainer Deal (New)])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b792281a-5244-4015-a9e3-40f280d70e0d
+
+	measure 'Left Earnings' = [Target Earnings]-[Current Earnings]
+		lineageTag: 40873fde-fede-469a-9500-88a56f457f5e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '85% Tier Msg' = ```
+			
+			VAR CurrentEarn = [Current Earnings] -- Your measure for current earnings
+			
+			-- Define your target fields/values
+			VAR Tier1 = [Minimum Earnings Required (85%)]
+			
+			-- Calculate the remaining gaps
+			VAR Gap1 = Tier1 - CurrentEarn
+			
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    -- If they haven't even hit Tier 1
+			    CurrentEarn < Tier1, 
+			        "🔒 Require " & FORMAT(Gap1, "#,##0") & " more earning to unlock",
+			        
+			    -- If they hit Tier 1 but are chasing Tier 2
+			    CurrentEarn >= Tier1, 
+			        "✅ Unlocked!"
+			        
+			)
+			```
+		lineageTag: cd5a29b1-5ade-4dd4-b34e-bed3beff24f9
+
+	measure '90% Tier Msg' = ```
+			
+			VAR CurrentEarn = [Current Earnings] -- Your measure for current earnings
+			
+			-- Define your target fields/values
+			VAR Tier2 = [Target Earnings]*0.9
+			
+			-- Calculate the remaining gaps
+			VAR Gap = Tier2 - CurrentEarn
+			
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    -- If they haven't even hit Tier 1
+			    CurrentEarn < Tier2, 
+			        "🔒 Require " & FORMAT(Gap, "#,##0") & " more earning to unlock",
+			        
+			    -- If they hit Tier 1 but are chasing Tier 2
+			    CurrentEarn >= Tier2, 
+			        "✅ Unlocked!"
+			        
+			)
+			```
+		lineageTag: 34e585c3-27f4-4bea-8717-c3591cc36059
+
+	measure '100% Tier Msg' = ```
+			
+			VAR CurrentEarn = [Current Earnings] -- Your measure for current earnings
+			
+			-- Define your target fields/values
+			VAR Tier2 = [Target Earnings]
+			
+			-- Calculate the remaining gaps
+			VAR Gap = Tier2 - CurrentEarn
+			
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    -- If they haven't even hit Tier 1
+			    CurrentEarn < Tier2, 
+			        "🔒 Require " & FORMAT(Gap, "#,##0") & " more earning to unlock",
+			        
+			    -- If they hit Tier 1 but are chasing Tier 2
+			    CurrentEarn >= Tier2, 
+			        "✅ Unlocked!"
+			        
+			)
+			```
+		lineageTag: af838dd7-2446-4cfe-9e44-082d9f0a6f88
+
+	measure '120% Tier Msg' = ```
+			
+			VAR CurrentEarn = [Current Earnings] -- Your measure for current earnings
+			
+			-- Define your target fields/values
+			VAR Tier2 = [Target Earnings]*1.2
+			
+			-- Calculate the remaining gaps
+			VAR Gap = Tier2 - CurrentEarn
+			
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    -- If they haven't even hit Tier 1
+			    CurrentEarn < Tier2, 
+			        "🔒 Require " & FORMAT(Gap, "#,##0") & " more earning to unlock",
+			        
+			    -- If they hit Tier 1 but are chasing Tier 2
+			    CurrentEarn >= Tier2, 
+			        "✅ Unlocked!"
+			        
+			)
+			```
+		lineageTag: 4a66e604-7596-4a2f-8275-93f4a147d474
+
+	measure 'Difference (MTD(85%) vs Net)' = [Net Revenue]-[Minimum Earnings Required (85%)]
+		lineageTag: e092d32e-ebfa-431e-988c-be9874ce0f98
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Incentive Earning' = SUM('Profitability - Dashboard - 2022_26 (2)'[Incentive])/1.18
+		lineageTag: 1711e243-6270-4964-8508-eb71bf7bf0e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: ba9b1baa-1a86-4e11-bae8-291b940a6700
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column 2'
+		type: calculated
+		lineageTag: 8d8d6dc4-6a7b-48d2-b440-90236e3690da
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
+
+	partition 'All Measures' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 0c1c6b88b518427b9992cc72c18ec5de
+

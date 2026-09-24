@@ -1,0 +1,393 @@
+table 'Google Measures'
+	lineageTag: d8c18c70-98d9-493b-a136-a5d1449a6909
+
+	measure Google_CTR = CALCULATE(DIVIDE(SUM('Google Overall Share BI'[Clicks]),SUM('Google Overall Share BI'[Impressions__Google_Ads])))
+		formatString: 0%;-0%;0%
+		lineageTag: 49a8e5a3-b920-4623-8f66-7ee99f8dbeee
+
+	measure Google_CPC = CALCULATE(DIVIDE([Google Spent],SUM('Google Overall Share BI'[Clicks])))
+		lineageTag: 99364666-8403-4ad7-b581-901ae3f56129
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MOM% G_Spent' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Google Spent]
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Cost]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: 35347739-af82-4f9b-8158-fa1fa18876df
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MOM% G_Revenue' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Google Revenue]
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Conv__Value__Google_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: 4de27e0c-4ef1-4caa-9c0e-8a0a2a6043b2
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MOM% G_ROAS' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Google ROAS]
+			
+			VAR _PM =
+			    CALCULATE(
+			        DIVIDE([Google Revenue],[Google Spent],0),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: fa5c07cc-88be-4909-a5a2-b7052bced2b0
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure G_Impression = SUM('Google Overall Share BI'[Impressions__Google_Ads])
+		formatString: 0
+		lineageTag: b6c37cc0-fb1e-4aab-b438-3e351d130d4a
+
+	measure Google_CPM = ([Google Spent] / [G_Impression]) *1000
+		lineageTag: fefe3276-d7aa-48c7-b887-ac88a9e0e1e5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'G_Conversion Rate %' = SUM('Google Overall Share BI'[Conversions__Google_Ads]) / SUM('Google Overall Share BI'[Clicks__Google_Ads])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 99476910-a53e-4f16-8fd1-cbd4eaa44c36
+
+	measure 'MOM% G_Impression' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			VAR _CM = [G_Impression]
+			VAR _PM =
+			    CALCULATE(
+			        [G_Impression],
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 71325944-95f7-4b93-b88d-d8c0238f8824
+
+	measure 'MoM% Google CTR' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Google_CTR]
+			
+			VAR _PM =
+			    CALCULATE(
+			        [Google_CTR],
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e7a9cb02-e952-4a3e-bebc-d9505ea8518a
+
+	measure 'MoM% Pageview Interaction' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[All_Conv___Google_Ads]),
+			        FILTER(
+			            'Google Overall Share BI',
+			            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "PAGE_VIEW")
+			        )
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[All_Conv___Google_Ads]),
+			        FILTER(
+			            'Google Overall Share BI',
+			            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "PAGE_VIEW")
+			        ),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: a51ed5e7-d457-4d95-9229-829cde8c6b76
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MoM% ALL_Conversion' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[All_Conv___Google_Ads])   -- Your interaction column
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[All_Conv___Google_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e9cc8d5c-a6ea-4d83-a08a-2641f9b975e0
+
+	measure 'MoM% Add to cart Interaction' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Interactions__Google_Ads]),
+			        FILTER(
+			            'Google Overall Share BI',
+			            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "Add to cart")
+			        )
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Interactions__Google_Ads]),
+			        FILTER(
+			            'Google Overall Share BI',
+			            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "Add to cart")
+			        ),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 4919642b-a68b-46a2-8cae-2481819c53af
+
+	measure 'MoM% interaction' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Interactions__Google_Ads])   -- Your interaction column
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Interactions__Google_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: e4e67c2d-76b9-4d61-8a13-e74c1d4184ac
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MoM% Conversion' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Conversions__Google_Ads])   -- Your interaction column
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Conversions__Google_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: c21755fc-b1bb-4b0f-a5f9-0998d903df33
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MoM% Conversion_Value' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[All_Conv__Value__Google_Ads])   -- Your interaction column
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[All_Conv__Value__Google_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ed104141-9b69-463b-a905-518ae8fd264d
+
+	measure 'MoM% G_Clicks' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Clicks__Google_Ads])   -- Your interaction column
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Google Overall Share BI'[Clicks__Google_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 20b002e0-9660-41fc-97c1-026124029cf1
+
+	measure 'MoM% G_CTR' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        [Google_CTR]    -- Use measure directly
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        'Google Measures'[Google_CTR],
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: cae7688f-30f9-45c3-9bbc-95bbef8177aa
+
+	measure 'MoM% G_CPC' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM =
+			    CALCULATE(
+			        [Google_CPC]    -- Use measure directly
+			    )
+			
+			VAR _PM =
+			    CALCULATE(
+			        'Google Measures'[Google_CPC],
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: cf96c8ce-b5b8-42ee-aa94-aa7394df19c2
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	column Column
+		formatString: 0
+		lineageTag: e7a2c017-c5d4-40d9-a4fc-f0c8dd280fde
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Google Measures' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 8d771ce674b147a292fa3f4ae4b2e089
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

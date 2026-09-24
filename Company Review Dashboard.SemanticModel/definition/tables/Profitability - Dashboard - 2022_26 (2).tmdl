@@ -1,0 +1,336 @@
+table 'Profitability - Dashboard - 2022_26 (2)'
+	lineageTag: f4d50614-5c4b-44e8-ab49-54b733cfae2d
+
+	column Gross
+		dataType: double
+		lineageTag: d706b744-e5a1-410a-a937-6fc1cd2f65dd
+		summarizeBy: sum
+		sourceColumn: Gross
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Social Media'
+		dataType: string
+		lineageTag: f2649a1d-51c8-449e-b0e7-953d024bad96
+		summarizeBy: none
+		sourceColumn: Social Media
+
+		annotation SummarizationSetBy = Automatic
+
+	column Incentive
+		dataType: double
+		lineageTag: 79a4c8af-e355-4b9c-b51b-37230841783b
+		summarizeBy: sum
+		sourceColumn: Incentive
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Clients
+		dataType: string
+		lineageTag: 1baa22e1-cb4a-40ff-8bd5-67337793afdc
+		summarizeBy: none
+		sourceColumn: Clients
+
+		annotation SummarizationSetBy = Automatic
+
+	column Total
+		dataType: double
+		lineageTag: 5572dfad-af43-47da-8594-314dfb83bc9b
+		summarizeBy: sum
+		sourceColumn: Total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Retainer
+		dataType: int64
+		formatString: 0
+		lineageTag: d717297b-5ad6-426f-92a5-4967a5d1e74b
+		summarizeBy: sum
+		sourceColumn: Retainer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Website
+		dataType: int64
+		formatString: 0
+		lineageTag: 179d446a-cea8-478c-95d9-31ac0a96d34a
+		summarizeBy: sum
+		sourceColumn: Website
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d951e60f-3cf7-420a-b2d2-fd343f9e4e3d
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Status
+		dataType: string
+		lineageTag: b5dc3c8e-a467-4138-8d75-442e1e0995d2
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Name' =
+			
+			SWITCH ( TRUE(),
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Drzya" ), "Drzya",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Mahima Mahajan" ), "Mahima Mahajan",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Tarun Tahalini" ), "Tarun Tahiliani",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Ridhi Mehra- Edge Fashion" ), "Ridhi Mehra",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Meena Bazaar" ), "Meena Bazaar",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shaira Fashion - Dubai" ), "Shaira Fashion Dubai",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Image International" ), "Image 1993",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Puneet Kapoor Label" ), "Puneet Kapoor",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Safaa" ), "Safaa World",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "H&N - Lint Clothing Pvt Ltd" ), "Hemant and Nandita",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Flirtatious - Shivaaye International" ), "Flirtatious",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Dusala - One Couture" ), "Dusala",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aisha Rao - ARDS Design" ), "Aisha Rao",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Gazal Gupta" ), "Gazal Gupta",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Limited Etd - NM Sports Fashion Concepts Pvt.Ltd." ), "Limited EDT",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "House of Deepthi" ), "House of Deepthi",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Samar Fashion - Chamee & Palak" ), "Chamee and Palak",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Soltee - Sulakshana Monga" ), "Sulakshana Monga",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Bairaas- Shivani Creation Pvt Ltd" ), "BairaasB",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Calling June - S.A.N. Intl Pvt. Ltd." ), "Calling June",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shahin Mannan- New" ), "Shahin Manan",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Neha Chopra - Haands Free" ), "Haandsfree",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sanam Lalwani" ), "Sanam Lalwani",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Mandira Wirk - Mandira Wirk Designs LLP" ), "Mandira Wirk",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Bunka Studio- Bunka Studio Pvt Ltd" ), "Bunka",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aneesh Agarwaal Design" ), "Aneesh Agarwal",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Diya Rajvvir - J A Taxtiles" ), "Diyarajvvir",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sukriti and Aakriti - Shivaaye International" ), "Sukriti and Aakriti",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Horizon Exports & Imports - Koakh" ), "Koakh",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "GANPATI EXPOTS" ), "Ganpati Bridal Wear",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Toosh Kashmir" ), "Toosh Kashmir",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shikha Amish Jariwala - Shikha Mehta" ), "Shikha Mehta",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Leather Garden - Amazone Leather Pvt Ltd" ), "The Leather Garden",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aulyra Design Private Limited - Aulerth" ), "Aulerth",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "I Am Design" ), "I am Design",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "MEHAK MURPANA" ), "Mehak Murpana",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "SROTA PRET & COUTURE" ), "Srota",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Dimple Amani - KRU Ventures Ltd - (Jay)" ), "Dimple Amani",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Jewel Boutique - Preeti Mohan" ), "Preeti Mohan",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Radheya Apparels Pvt Ltd - Ribionwear" ), "Ribionwear",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Hazoorilal & Sons Jewellers Pvt Ltd" ), "Hazoorilal IND",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Gaurav Gupta- REFLECT SCULPT PVT LTD" ), "Gaurav Gupta",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Anju Modi - Anjuman Brand Designs Pvt. Ltd." ), "Anju Modi",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Maison Shefali - SHEFALI JAIN" ), "Maison Shefali",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Art By Gayatri" ) || CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "ABG" ), "Art by Gayatri",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "GAIA" ), "Gaia by Archie",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Mimamsaa" ), "Mimamsaa",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Melange" ), "Melange",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Rari and Love" ), "Rari and Love",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Esha Koul" ), "Esha Koul",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Riyaasat" ), "Riyaasat",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Style Inn" ), "Style Inn",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Paarsh Atelier" ), "Paarsh Atelier",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Notebook" ), "Notebook",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Isha Gupta Tayal" ), "Isha Gupta Tayal",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Studio Bageechaa" ), "Studio Bageecha",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Taassur" ), "Taassur",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "PH Project" ), "PH Project",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Rachit Khanna" ), "Rachit Khanna",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shruti & Sancheti" ), "Shruti Sancheti",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Eli Bitton" ), "Eli Bitton",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Rooh by Ridhimaa" ), "Rooh by Ridhimaa",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aparnaa Sarees" ), "Aparnaa Sarees",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Angad Singh" ), "Angad Singh Official",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Guldavari" ), "Guldavari",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "FEBo6" ), "FEBo6",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "KnotMeCute" ), "KnotMeCute",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Chrkha" ), "Chrkha",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Itrh" ), "ITRH Official",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Krina Patel Couture - Krina Enterprise" ), "Krina Patel",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Rainas" ), "Raina",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shukrana" ), "Shukrana by PK",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "ASH AMAIRA" ), "ASH AMAIRA",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Almas Tejani" ), "Almas Tejani",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Merakk" ), "Merakk",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Stokke" ), "Stokke",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sia Bridal" ), "Sia Bridal",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Abbir & Nanki" ), "369 By Abir N Nanki",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Maitri - Varuna Verma" ), "Maitri",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "The Leather Tailors" ), "The Leather Tailors",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Raisin" ), "Raisin",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Amplify" ), "Amplify 43188",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sammsara" ), "Sammsara",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Ankita Dharman - New" ), "Ankita Dharman",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Dolly J Couture Private Limited" ), "DollyJ Studio",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Real designDesign Project- Son of Nobal" ), "Son Of A Noble",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Contemponari - Sahibtek Private Limited" ), "Contemponari",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Monika Nidhii" ), "Monika Nidhii",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aerohaven - Giridhar Home Furnishing" ), "Aerohaven",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Bridal Asia" ), "Bridal Asia",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "GANPATI EXPOTS" ), "Ganpati Bridal Wear",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Heritage Punjab - Harinder Pal Singh" ), "Heritage Punjab",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Bohera - Khem Chand Handicrafts" ), "Bohera",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Saltz and Sand" ), "Saltz n Sand",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Studio Love Letter - Maha Design Studios Pvt Ltd" ), "Studio Love Letter",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Gyans - N.K.G Enterprises" ), "Gyans",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Prose Stories - Prose Design House Pvt. Ltd." ), "Prose Stories",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shuvaa Enterprises - Sitarra Living" ), "Sitarra Living",
+			    CONTAINSSTRING ('Profitability - Dashboard - 2022_26 (2)'[Clients], "Prints By Radhika" ), "Prints By Radhika",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shah Style Inc" ), "Shah Style",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Dimple Amani" ), "Dimple Amani",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Rohit Bal" ), "Rohit Bal",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Pashmeen Trading" ), "Pashmeen",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Prints By Radhika - Radhika Rawat (Restarted)" ), "Prints By Radhika",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sanam Lalwani" ) , "Sanam",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Utkarsh Mithas - Perte D'ego" ), "Perte D'ego",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Richa Ahluwalia - Shri Kumar Designs" ), "Richa Ahluwalia",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Nirmoha - Nirmoha Fashion House Pvt. Ltd." ), "Nirmooha",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "House Of Atri LLP" ), "House of Atri",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sana Barreja" ), "Sana Barreja",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Republic Of Zoofari - Sonalika Social Development Society" ), "Republic Of Zoofari",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Moonray Lifestyle Private Limited" ), "Moonray",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Nuhh" ), "Nuhh",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Origin & Ode" ), "Origin And Ode",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Mukti & Kavita Casa LLP" ), "Mukti & Kavith Casa",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Zaveer International Private Limited-MMVM" ), "MMVM",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Mellowdrama" ), "Mellow Drama",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Silaakari" ), "Silaakari",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aispi India" ), "Aispi",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Begum Pret" ), "Begum Pret",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "The Whole Nine Yards" ), "TWNY",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Roza Pret" ), "Roza Pret",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Zamoraa" ), "Mukta Sabharwal",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "No Grey Area" ), "No Grey Area",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Label IRIS - M/S Prabal Enterprises " ), "Label IRIS",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shikha Mehta" ) , "Shikha Mehta",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Thr3Letter - Bunila" ), "Thr3Letter",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Minny Sandhu" ), "Minny Sandhu",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Nidhika Shekhar" ), "Nidhika Shekhar",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shantanu Goenka" ), "SHANTANU",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Artimen" ), "Artimen",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "East6" ), "Studio East6",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Study By Janak" ), "Study by Janak",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Zevar By Geeta" ), "Zevar by Geeta",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "House of Kopal - Saumya Kalwani" ), "House of Kopal",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Lajjoo CC - Shashi Kapoor (Restarted)" ) || CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Lajjoo CC - Shashi Kapoor" ), "Lajjoo C",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Rohan Gandhi/Rahul Khanna" ), "RGRK",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Dusha Amai - Abhishek Anil Tharwani (Soul & Co.)" ), "Dusha Amai",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sylk Clothing" ), "Sylk",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Pashupati Effects Pvt Ltd - Akilah" ), "Akilah",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Drishti Chhabra" ), "Drishti Chhabra",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aadhrit Inc - Dhruv Vaish" ), "Dhruv Vaish",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Eurumme - Golden Tree Company" ), "Eurumme",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Nitika Gujral" ), "Nitika Gujral",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Bhanuni - Jyoti sharma Bajaj" ), "Bhanuni by Jyoti",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Daga Label India" ), "Daga Label India",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Fine Silver Jewels" ), "Fine Silver Jewels",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "The Latest Labels Brands" ), "The Latest Labels",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Samvrih Clothing" ), "Samvrih",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Pluch Designs - Kiranpreet Kaur Walia" ), "Pluch Designs",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Suneet Verma Design Pvt Ltd" ), "Suneet Varma",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Athletifreak India Private Limited" ), "Athletifreak",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Panihari Fashion" ), "Panihari Fashion",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Shaza Lifestyle - GT Fashion PVT LTD" ), "Shaza",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Kalatantu" ), "Kalatantu",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Mrs. G" ), "Mrs. G",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Zabella - Ridah Design Studio" ), "Zabella",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Etar - Nirali Jignish Chokhawala" ), "Etar",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Athletifreak LLC - Intl" ), "Athletifreak USA",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Antar Agni Clothing" ), "Antar Agni",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Payal Jain" ), "Payal Jain",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Pashmeen QA" ), "Pashmeen",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Future 101 - Raghuvendra Rathore" ), "Raghavendra Rathore",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Swish - D & A Agencies" ), "Swish",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Arya Giri" ), "Arya Giri",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Studio By Agni - AGNEE INNOVATES PRIVATE LIMITED" ), "Studio by Agni",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Saundh Retail Private Limited" ), "Saundh",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Sandhya Shah" ), "Sandhya Shah",
+			    CONTAINSSTRING ( 'Profitability - Dashboard - 2022_26 (2)'[Clients], "Aarnella" ), "Aarnelle",
+			     CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Swish"), "Swish",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Arya Giri"), "Arya Giri",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Saundh"), "Saundh",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Sandhya Shah"), "Sandhya Shah",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Outhouse"), "Outhouse Jewellery",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Rahul Mishra"), "Rahul Mishra",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Sawan Gandhi"), "Sawan Gandhi",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Ladies of Leisure"), "Ladies of Leisure",
+			
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Raji Ramniq"), "Raji Ramniq",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Matsya"), "Matsya",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Monture"), "Monture",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "AFEW"), "AFEW",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Varun Bahl"), "Varun Bahl",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Hyskyn"), "Hyskyn",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "R K Jewellers"), "RK Jewellers",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Sapkaaz"), "Sapkaaz",
+			    CONTAINSSTRING('Profitability - Dashboard - 2022_26 (2)'[Clients], "Payal Singhal"), "Payal Singhal",
+			    'Profitability - Dashboard - 2022_26 (2)'[Clients]
+			)
+		lineageTag: d097e650-9ebe-494a-a754-4d9fd648d54f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is New Client' = ```
+			
+			VAR CurrentBrand =
+			    'Profitability - Dashboard - 2022_26 (2)'[Brand Name]
+			
+			VAR FirstRevenueDate =
+			    CALCULATE(
+			        MIN('Profitability - Dashboard - 2022_26 (2)'[Date]),
+			        FILTER(
+			            ALL('Profitability - Dashboard - 2022_26 (2)'),
+			            'Profitability - Dashboard - 2022_26 (2)'[Brand Name] = CurrentBrand &&
+			            'Profitability - Dashboard - 2022_26 (2)'[Gross] > 0
+			        )
+			    )
+			RETURN
+			IF(
+			    YEAR('Profitability - Dashboard - 2022_26 (2)'[Date]) = YEAR(FirstRevenueDate) &&
+			    MONTH('Profitability - Dashboard - 2022_26 (2)'[Date]) = MONTH(FirstRevenueDate) &&
+			    'Profitability - Dashboard - 2022_26 (2)'[Gross] > 0,
+			    "New Client",
+			    "Old Client"
+			)
+			
+			```
+		lineageTag: 24fa4e6e-ad04-4ef7-87b2-b277af2c85f7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Profitability - Dashboard - 2022_26 (2)' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1j-ZJlfNT9Nmg6prhZnkEFYENzybkv1Y0UddC1NuPqFE/edit?gid=21098626#gid=21098626"),
+				    #"Profitability - Dashboard - 2022_26_Table" = Source{[name="Profitability - Dashboard - 2022_26",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Profitability - Dashboard - 2022_26_Table", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Status", type text}, {"Clients", type text}, {"Total", type number}, {"Retainer", Int64.Type}, {"Website", Int64.Type}, {"Incentive", type number}, {"Social Media", type any}, {"Gross", type number}, {"Expenses", type text}, {"Cost", type number}, {"Target Revenue", Int64.Type}, {"Target Incentive", Int64.Type}, {"New Business - One-time", Int64.Type}, {"New Business - Retainer", Int64.Type}, {"Total Cash-In", Int64.Type}, {"Target BD", Int64.Type}, {"Target Ops", Int64.Type}, {"Retainer Revenue", Int64.Type}, {"Exit Month", type date}, {"Check Exit", Int64.Type}, {"Retainer Deal", Int64.Type}, {"", type any}, {"_1", type any}, {"_2", type any}, {"_3", type any}, {"_4", type any}, {"_5", type any}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"Gross", "Social Media", "Incentive", "Clients", "Total", "Retainer", "Website", "Date", "Status"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed Other Columns", {{"Date", type date}})
+				in
+				    #"Changed column type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

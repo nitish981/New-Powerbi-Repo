@@ -1,0 +1,71 @@
+relationship 4bfc7728-d856-41d1-8c44-12cc0b176a19
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DateSelection.Date
+	toColumn: LocalDateTable_8a58cc92-eb4d-4bd2-89b4-7ad4c56f8661.Date
+
+relationship bc810fd1-7b2e-42c6-b57d-729fae324d33
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sheet1.Month
+	toColumn: LocalDateTable_a5fa466c-63d4-4037-8d01-3e800ebdbdc9.Date
+
+relationship 8616dd20-cdc3-4f38-911f-ad68d8708128
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Command Center Funnel  For Review Dashboard'.Order_Created_At__Shopify
+	toColumn: LocalDateTable_36c9b0c1-f838-47a8-98a1-2a4d8cae91a6.Date
+
+relationship c1a2ec3d-173f-41de-88ac-12924e5671c2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Command Center Funnel  For Review Dashboard'.Order_Updated_At__Shopify
+	toColumn: LocalDateTable_7e979f6e-f523-406c-bc3b-91fde67755ee.Date
+
+relationship 422160b9-90a1-6155-9b7a-3e1c53f7c90e
+	toCardinality: many
+	fromColumn: 'Command Center Funnel  For Review Dashboard'.Data_Source_name
+	toColumn: 'Growify''s Sales Incentive'.Brands
+
+relationship f88c44af-8616-63fd-aae4-028cab90221d
+	toCardinality: many
+	fromColumn: 'Store Sales'.Brand
+	toColumn: 'Growify''s Sales Incentive'.Brands
+
+relationship 93d9f6f1-feeb-714d-9158-691c38915c85
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: 'Growify''s Sales Incentive'.Brands
+	toColumn: 'Profitability - Dashboard - 2022_26 (2)'.'Brand Name'
+
+relationship 5592cd5b-91dc-4f53-5f8a-6ec7500263ee
+	toCardinality: many
+	fromColumn: Teamwise_revenue.'Brand Name'
+	toColumn: 'Growify''s Sales Incentive'.Brands
+
+relationship 0c4c5aad-cc41-4339-8d72-ffdba0e089a2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DateTable.Date
+	toColumn: LocalDateTable_bd59f741-5a34-4c88-9f0f-6e857ec194c6.Date
+
+relationship aa24b68a-210b-35cb-bd8e-c4b58f3b652f
+	fromColumn: 'Store Sales'.Date
+	toColumn: DateTable.Date
+
+relationship 252f2730-fec7-6abd-4cbb-c89e7afb5002
+	fromColumn: 'Command Center Funnel  For Review Dashboard'.Date
+	toColumn: DateTable.Date
+
+relationship b4da5da3-7953-fe85-9432-f0f25092d591
+	fromColumn: 'Growify''s Sales Incentive'.Date
+	toColumn: DateTable.Date
+
+relationship 9f22a3ad-79e2-c13a-d80d-d8ed5c0fbe8d
+	fromColumn: 'Profitability - Dashboard - 2022_26 (2)'.Date
+	toColumn: DateTable.Date
+
+relationship 2dc493e1-470d-c04c-4ac6-b2d3d8b5e0e1
+	fromColumn: Teamwise_revenue.Date
+	toColumn: DateTable.Date
+
+relationship 67aa710c-ec8d-4ed3-ab1d-05458bfe2c94
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DateTable.'Formatted Date'
+	toColumn: LocalDateTable_72f5eee1-c7ce-42fc-96d4-d10c51c91163.Date
+

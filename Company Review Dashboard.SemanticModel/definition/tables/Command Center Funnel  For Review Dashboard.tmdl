@@ -1,0 +1,192 @@
+table 'Command Center Funnel  For Review Dashboard'
+	lineageTag: 6d69c424-8ff3-470a-9226-6dcebc669086
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 369efc22-e4ae-40c9-bf2d-118b97a36014
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Data_Source_name
+		dataType: string
+		lineageTag: f3626274-96c8-4578-b1de-953a61139def
+		summarizeBy: none
+		sourceColumn: Data_Source_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Created_At__Shopify
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b2128b97-5694-4224-8c08-9d0abf7362af
+		summarizeBy: none
+		sourceColumn: Order_Created_At__Shopify
+
+		variation Variation
+			isDefault
+			relationship: 8616dd20-cdc3-4f38-911f-ad68d8708128
+			defaultHierarchy: LocalDateTable_36c9b0c1-f838-47a8-98a1-2a4d8cae91a6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Updated_At__Shopify
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: bd62f1ea-b5ab-43d8-9710-b99ba20192e5
+		summarizeBy: none
+		sourceColumn: Order_Updated_At__Shopify
+
+		variation Variation
+			isDefault
+			relationship: c1a2ec3d-173f-41de-88ac-12924e5671c2
+			defaultHierarchy: LocalDateTable_7e979f6e-f523-406c-bc3b-91fde67755ee.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gross_Sales__Shopify
+		dataType: double
+		lineageTag: 09f6f873-89da-46da-8b26-90f549f8b3d3
+		summarizeBy: sum
+		sourceColumn: Gross_Sales__Shopify
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Total_Sales__Shopify
+		dataType: double
+		lineageTag: 70bc9854-6a27-4f4d-a54d-f374483b9b81
+		summarizeBy: sum
+		sourceColumn: Total_Sales__Shopify
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Net_Sales__Shopify
+		dataType: double
+		lineageTag: 5f22ae86-e3cc-4f8a-b87c-a4d088506f6f
+		summarizeBy: sum
+		sourceColumn: Net_Sales__Shopify
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Orders__Shopify
+		dataType: int64
+		formatString: 0
+		lineageTag: 9024db8a-b79d-485c-b1df-6b1112387f11
+		summarizeBy: sum
+		sourceColumn: Orders__Shopify
+
+		annotation SummarizationSetBy = Automatic
+
+	column Returns__Shopify
+		dataType: double
+		lineageTag: 6314098f-3b15-43e1-a508-c4bee5fe1b22
+		summarizeBy: sum
+		sourceColumn: Returns__Shopify
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Geo_Location_Segment
+		dataType: string
+		lineageTag: 0365034f-ca24-4e90-a29a-6fd100b05273
+		summarizeBy: none
+		sourceColumn: Geo_Location_Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount_Spent__Facebook_Ads
+		dataType: double
+		lineageTag: df44c3e7-fc01-409d-a267-b74e24b79847
+		summarizeBy: sum
+		sourceColumn: Amount_Spent__Facebook_Ads
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Purchases__Facebook_Ads
+		dataType: int64
+		formatString: 0
+		lineageTag: f677eedc-9f3d-4add-9671-91ae2da18a45
+		summarizeBy: sum
+		sourceColumn: Purchases__Facebook_Ads
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchases_Conversion_Value__Facebook_Ads
+		dataType: double
+		lineageTag: 9c1685de-29ea-4d58-b162-ba8a5d33523a
+		summarizeBy: sum
+		sourceColumn: Purchases_Conversion_Value__Facebook_Ads
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Cost__Google_Ads
+		dataType: double
+		lineageTag: b727e13c-e317-4761-a5c7-5b943f8e934f
+		summarizeBy: sum
+		sourceColumn: Cost__Google_Ads
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Conv__Value__Google_Ads
+		dataType: double
+		lineageTag: 49edd7fa-4239-4b5c-9b4d-51da5dd687c2
+		summarizeBy: sum
+		sourceColumn: Conv__Value__Google_Ads
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Conversions__Google_Ads
+		dataType: double
+		lineageTag: bb545030-ffbb-48f4-9883-7a3984493274
+		summarizeBy: sum
+		sourceColumn: Conversions__Google_Ads
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Shipping__Shopify
+		dataType: double
+		lineageTag: b93ef88a-7756-4240-ae8c-583b75050465
+		summarizeBy: sum
+		sourceColumn: Shipping__Shopify
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Command Center Funnel  For Review Dashboard' = m
+		mode: import
+		source =
+				let
+				    Source = Funnel.Contents(),
+				    #"-OApqMicCzy84qBorKH-" = Source{[accountId="-OApqMicCzy84qBorKH-"]}[Data],
+				    #"1jfiprt1bkunn" = #"-OApqMicCzy84qBorKH-"{[viewId="1jfiprt1bkunn"]}[Data],
+				    #"Invoked Function1jfiprt1bkunn1" = #"1jfiprt1bkunn"(null),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Invoked Function1jfiprt1bkunn1",{{"Order_Created_At__Shopify", type datetime}, {"Order_Updated_At__Shopify", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,95 @@
+table 'Store Sales'
+	lineageTag: 88d045e7-09e7-4049-bf51-5ea202d40af3
+
+	column Brand
+		dataType: string
+		lineageTag: 5b5801a8-ca2e-4ea4-bcdb-6d8f1ae0c957
+		summarizeBy: none
+		sourceColumn: Brand
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ab107efd-7623-401e-8b12-ec21f925cdcf
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Net Sales'
+		dataType: double
+		lineageTag: ffa4e5d3-14d4-4cb5-9522-411afcb32475
+		summarizeBy: sum
+		sourceColumn: Net Sales
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column1
+		dataType: string
+		lineageTag: c2b1fdd5-ee5d-4edb-9837-1f31e9abdbe7
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	column _1
+		dataType: string
+		lineageTag: 54806691-b314-4c18-9e1d-ab8c342c22ef
+		summarizeBy: none
+		sourceColumn: _1
+
+		annotation SummarizationSetBy = Automatic
+
+	column _2
+		dataType: string
+		lineageTag: d1a40920-0cde-452f-9899-bf6085cfb012
+		summarizeBy: none
+		sourceColumn: _2
+
+		annotation SummarizationSetBy = Automatic
+
+	column _3
+		dataType: string
+		lineageTag: ebe7d87b-9c54-433a-9cd8-d2eda051c3aa
+		summarizeBy: none
+		sourceColumn: _3
+
+		annotation SummarizationSetBy = Automatic
+
+	column _4
+		dataType: string
+		lineageTag: 5a922c4b-db53-4c05-9176-1a80a42a6ed3
+		summarizeBy: none
+		sourceColumn: _4
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Store Sales' = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1EuVSJav7QyWuJllS5g1xU2_zHuJ1-hvPcvvEtng8gZE/edit?usp=sharing"),
+				  #"Navigation 1" = Source{[name = "Store Sales", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Brand", type text}, {"Date", type date}, {"Net Sales", Int64.Type}}),
+				  #"Replaced value" = Table.ReplaceValue(#"Changed column type", null, 0, Replacer.ReplaceValue, {"Brand", "Date", "Net Sales"}),
+				  #"Changed column type 1" = Table.TransformColumnTypes(#"Replaced value", {{"Date", type date}})
+				in
+				  #"Changed column type 1"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

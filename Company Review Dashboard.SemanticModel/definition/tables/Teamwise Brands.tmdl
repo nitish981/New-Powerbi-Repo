@@ -1,0 +1,45 @@
+table 'Teamwise Brands'
+	lineageTag: 4e887ad5-4b8e-4004-8156-183e067b9419
+
+	column Brands
+		dataType: string
+		lineageTag: c8a8b903-d5a2-444c-83fb-82f5ea74a813
+		summarizeBy: none
+		sourceColumn: Brands
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 23d5bfaa-c426-4798-9183-980d7c7c0310
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Team'
+		dataType: string
+		lineageTag: da110e42-6076-4225-812f-f772c1f86572
+		summarizeBy: none
+		sourceColumn: Brand Team
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Teamwise Brands' = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zSc_Gx9BzqvKfQylToi_-jgQYqPZslv_o7YwCYh4I34/edit?gid=880509353#gid=880509353"),
+				  #"Navigation 1" = Source{[name = "Teamwise Brands", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Filtered rows" = Table.SelectRows(#"Promoted headers", each ([Brands] <> "")),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Filtered rows", {{"Date", type date}}),
+				  #"Filtered rows 1" = Table.SelectRows(#"Changed column type", each ([Brands] <> "Myra Bags CA")),
+				  #"Removed columns" = Table.RemoveColumns(#"Filtered rows 1", {"Date"})
+				in
+				    #"Removed columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

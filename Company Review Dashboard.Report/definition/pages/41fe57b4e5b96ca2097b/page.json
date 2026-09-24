@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "41fe57b4e5b96ca2097b",
+  "displayName": "Team Achieved Earning",
+  "displayOption": "FitToWidth",
+  "height": 4000,
+  "width": 1600,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "ThemeDataColor": {
+                    "ColorId": 0,
+                    "Percent": 0
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "379b61d82a927471900a",
+      "target": "088f7a1423778fda95c3",
+      "type": "NoFilter"
+    },
+    {
+      "source": "379b61d82a927471900a",
+      "target": "d49aa384ccabaa2c2b37",
+      "type": "NoFilter"
+    },
+    {
+      "source": "379b61d82a927471900a",
+      "target": "2e6afefd50ad6816bb1d",
+      "type": "NoFilter"
+    }
+  ]
+}

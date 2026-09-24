@@ -1,0 +1,76 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	maxParallelismPerRefresh: 1
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+/// Errors in queries that were loaded on 23-10-2025 11:11:01.
+queryGroup 'Query Errors - 23-10-2025 11:11:01'
+
+	annotation PBI_QueryGroupOrder = 0
+
+/// Errors in queries that were loaded on 10-11-2025 18:18:43.
+queryGroup 'Query Errors - 10-11-2025 18:18:43'
+
+	annotation PBI_QueryGroupOrder = 1
+
+/// Errors in queries that were loaded on 10-11-2025 18:27:25.
+queryGroup 'Query Errors - 10-11-2025 18:27:25'
+
+	annotation PBI_QueryGroupOrder = 2
+
+/// Errors in queries that were loaded on 03-12-2025 10:58:26.
+queryGroup 'Query Errors - 03-12-2025 10:58:26'
+
+	annotation PBI_QueryGroupOrder = 3
+
+/// Errors in queries that were loaded on 27/01/2026 19:20:55.
+queryGroup 'Query Errors - 27/01/2026 19:20:55'
+
+	annotation PBI_QueryGroupOrder = 4
+
+/// Errors in queries that were loaded on 28/01/2026 16:31:57.
+queryGroup 'Query Errors - 28/01/2026 16:31:57'
+
+	annotation PBI_QueryGroupOrder = 5
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Target sheet","Errors in Target sheet","Growify's Sales Incentive","Errors in Growify's Sales Incentive","Errors in Growify's Sales Incentive (2)","Errors in Growify's Sales Incentive (3)","Store Sales","Teamwise Brands","Command Center Funnel  For Review Dashboard","Sheet1","Profitability - Dashboard - 2022_26","Errors in Growify's Sales Incentive (4)","Errors in Profitability - Dashboard - 2022_26","Profitability - Dashboard - 2022_26 (2)","Teamwise_revenue"]
+
+annotation PBI_ProTooling = ["CopilotTooling","WebModelingEdit","TMDLView_Desktop","DevMode"]
+
+annotation __LastRPTime = 134314249309468916
+
+ref table DateTableTemplate_46edea31-248c-4532-a612-d11758ae674a
+ref table 'All Measures'
+ref table DateSelection
+ref table 'PreviousPeriod Measures'
+ref table 'Growify''s Sales Incentive'
+ref table 'Google Measures'
+ref table 'Mtd_sales Measures'
+ref table DateTable
+ref table LocalDateTable_8a58cc92-eb4d-4bd2-89b4-7ad4c56f8661
+ref table 'Store Sales'
+ref table 'Teamwise Brands'
+ref table 'Command Center Funnel  For Review Dashboard'
+ref table Sheet1
+ref table LocalDateTable_a5fa466c-63d4-4037-8d01-3e800ebdbdc9
+ref table LocalDateTable_36c9b0c1-f838-47a8-98a1-2a4d8cae91a6
+ref table LocalDateTable_7e979f6e-f523-406c-bc3b-91fde67755ee
+ref table 'Profitability - Dashboard - 2022_26 (2)'
+ref table Teamwise_revenue
+ref table LocalDateTable_bd59f741-5a34-4c88-9f0f-6e857ec194c6
+ref table LocalDateTable_72f5eee1-c7ce-42fc-96d4-d10c51c91163
+
+ref role 'Team 4'
+ref role 'Team 1'
+ref role 'Team 2'
+ref role 'Team 3'
+ref role 'Overall Growify'
+
+ref cultureInfo en-US
+

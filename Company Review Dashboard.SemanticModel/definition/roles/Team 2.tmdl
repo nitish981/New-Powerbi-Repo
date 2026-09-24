@@ -1,0 +1,7 @@
+role 'Team 2'
+	modelPermission: read
+
+	tablePermission 'Teamwise Brands' = [Brand Team] == "Team 2"
+
+	annotation PBI_Id = c169bc6f564b43a89c0cb5341f396a41
+

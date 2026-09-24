@@ -1,0 +1,187 @@
+expression 'Errors in Target sheet' =
+		let
+		Source = #"Target sheet",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Total Budget", "Expected ROI", "Growify's Sales Incentive %", "Expected Growify Incentive", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", ""}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Total Budget", "Expected ROI", "Growify's Sales Incentive %", "Expected Growify Incentive", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", ""}),
+		    #"Replaced Errors" = Table.ReplaceErrorValues(#"Reordered Columns", {{"Total Budget", 0}}),
+		    #"Replaced Errors1" = Table.ReplaceErrorValues(#"Replaced Errors", {{"SEM Budget", 0}}),
+		    #"Replaced Errors2" = Table.ReplaceErrorValues(#"Replaced Errors1", {{"Facebook Budget", 0}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Replaced Errors2",{"Expected Growify Incentive"})
+		in
+		  #"Removed Columns"
+	lineageTag: 8338dc92-cdc2-4db7-9138-2c11250ecb2d
+	queryGroup: 'Query Errors - 23-10-2025 11:11:01'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Errors in Growify''s Sales Incentive' =
+		let
+		Source = #"Growify's Sales Incentive",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Total Budget", "Growify's Sales Incentive %", "Expected Growify Incentive", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Sales Person", "Sales Store App.", "Sales Team Target", ""}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Total Budget", "Growify's Sales Incentive %", "Expected Growify Incentive", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Sales Person", "Sales Store App.", "Sales Team Target", ""})
+		in
+		  #"Reordered Columns"
+	lineageTag: b5f95f11-1ab0-47bf-a32b-cc6f0d0a07b7
+	queryGroup: 'Query Errors - 10-11-2025 18:18:43'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+
+expression 'Errors in Growify''s Sales Incentive (2)' =
+		let
+		Source = #"Growify's Sales Incentive",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Total Budget", "Growify's Sales Incentive %", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Sales Person", "Sales Store App.", "Sales Team Target", ""}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Total Budget", "Growify's Sales Incentive %", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Sales Person", "Sales Store App.", "Sales Team Target", ""}),
+		    #"Replaced Errors" = Table.ReplaceErrorValues(#"Reordered Columns", {{"Facebook Budget", 0}}),
+		    #"Replaced Errors1" = Table.ReplaceErrorValues(#"Replaced Errors", {{"SEM Budget", 0}}),
+		    #"Replaced Errors2" = Table.ReplaceErrorValues(#"Replaced Errors1", {{"Sales Target", 0}}),
+		    #"Replaced Errors3" = Table.ReplaceErrorValues(#"Replaced Errors2", {{"Total Budget", 0}}),
+		    #"Replaced Errors4" = Table.ReplaceErrorValues(#"Replaced Errors3", {{"Growth Google Budget", 0}})
+		in
+		  #"Replaced Errors4"
+	lineageTag: bc5e5f77-e09d-4f4d-80c2-4ec278ba8649
+	queryGroup: 'Query Errors - 10-11-2025 18:27:25'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Target sheet' =
+		let
+		    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zSc_Gx9BzqvKfQylToi_-jgQYqPZslv_o7YwCYh4I34/edit?gid=1925250974#gid=1925250974"),
+		    Sheet1_Table = Source{[name="Sheet1",ItemKind="Table"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Brands", type text}, {"Date", type date}, {"Month", Int64.Type}, {"Year", Int64.Type}, {"Sales Target", Int64.Type}, {"Facebook Budget", type number}, {"SEM Budget", type any}, {"Total Budget", type number}, {"Expected ROI", type any}, {"Growify's Sales Incentive %", type number}, {"Expected Growify Incentive", type any}, {"Brand Team", type text}, {"FB Managers", type text}, {"Brand Managers", type text}, {"Brand Status", type text}, {"Brand Type", type text}, {"Incentive Level", type text}, {"Sales Done", type text}, {"Sales Team", type text}, {"Google Managers", type text}, {"Retainer Deal", type any}, {"Growth Target", Int64.Type}, {"Growth Meta Budget", Int64.Type}, {"Growth Google Budget", Int64.Type}, {"Growth Budget", Int64.Type}, {"", type any}}),
+		    #"Replaced Errors" = Table.ReplaceErrorValues(#"Changed Type", {{"Sales Target", 0}}),
+		    #"Trimmed Text" = Table.TransformColumns(Table.TransformColumnTypes(#"Replaced Errors", {{"Sales Target", type text}}, "en-IN"),{{"Sales Target", Text.Trim, type text}}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Trimmed Text",{{"Sales Target", Int64.Type}, {"Expected ROI", type number}}),
+		    #"Replaced Errors1" = Table.ReplaceErrorValues(#"Changed Type1", {{"Expected ROI", 0}}),
+		    #"Replaced Errors2" = Table.ReplaceErrorValues(#"Replaced Errors1", {{"Retainer Deal", "0"}}),
+		    #"Replaced Errors3" = Table.ReplaceErrorValues(#"Replaced Errors2", {{"SEM Budget", 0}}),
+		    #"Replaced Errors4" = Table.ReplaceErrorValues(#"Replaced Errors3", {{"Total Budget", 0}}),
+		    #"Replaced Errors5" = Table.ReplaceErrorValues(#"Replaced Errors4", {{"Facebook Budget", 0}}),
+		    #"Replaced Errors6" = Table.ReplaceErrorValues(#"Replaced Errors5", {{"Expected Growify Incentive", 0}}),
+		    #"Removed Blank Rows" = Table.SelectRows(#"Replaced Errors6", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+		in
+		    #"Removed Blank Rows"
+	lineageTag: ab3c4b3f-1db6-4a4b-90b9-ca23e9362b15
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+
+expression 'Errors in Growify''s Sales Incentive (3)' =
+		let
+		Source = #"Growify's Sales Incentive",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Growify's Sales Incentive %", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Sales Person", "Sales Store App.", "Sales Team Target", "", "Total Budgets"}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Growify's Sales Incentive %", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Sales Person", "Sales Store App.", "Sales Team Target", "", "Total Budgets"})
+		in
+		  #"Reordered Columns"
+	lineageTag: 5010f772-af1c-4eb3-b9d5-49d091794cfe
+	queryGroup: 'Query Errors - 03-12-2025 10:58:26'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Errors in Growify''s Sales Incentive (4)' =
+		let
+		Source = #"Growify's Sales Incentive",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Growify's Sales Incentive %", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Client Target", "Sales Person", "Sales Store App.", "Sales Team Target", "Average Revenue - Lost Client", "Total Budgets"}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brands", "Date", "Month", "Year", "Sales Target", "Facebook Budget", "SEM Budget", "Growify's Sales Incentive %", "Brand Team", "FB Managers", "Brand Managers", "Brand Status", "Brand Type", "Incentive Level", "Sales Done", "Sales Team", "Google Managers", "Retainer Deal", "Growth Target", "Growth Meta Budget", "Growth Google Budget", "Growth Budget", "Client Target", "Sales Person", "Sales Store App.", "Sales Team Target", "Average Revenue - Lost Client", "Total Budgets"})
+		in
+		  #"Reordered Columns"
+	lineageTag: 4de42954-21bf-4552-8231-fd38bbdc74bf
+	queryGroup: 'Query Errors - 27/01/2026 19:20:55'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Errors in Profitability - Dashboard - 2022_26' =
+		let
+		Source = #"Profitability - Dashboard - 2022_26",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Date", "Status", "Clients", "Total", "Retainer", "Website", "Incentive", "Social Media", "Gross", "Expenses", "Cost", "Target Revenue", "Target Incentive", "New Business - One-time", "New Business - Retainer", "Total Cash-In", "Target BD", "Target Ops", "Retainer Revenue", "Exit Month", "Check Exit", "Retainer Deal", "", "_1", "_2", "_3", "_4", "_5"}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Date", "Status", "Clients", "Total", "Retainer", "Website", "Incentive", "Social Media", "Gross", "Expenses", "Cost", "Target Revenue", "Target Incentive", "New Business - One-time", "New Business - Retainer", "Total Cash-In", "Target BD", "Target Ops", "Retainer Revenue", "Exit Month", "Check Exit", "Retainer Deal", "", "_1", "_2", "_3", "_4", "_5"})
+		in
+		  #"Reordered Columns"
+	lineageTag: 6939bbde-c3fe-40a8-9d70-334db5e4651d
+	queryGroup: 'Query Errors - 28/01/2026 16:31:57'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Profitability - Dashboard - 2022_26' =
+		let
+		    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1j-ZJlfNT9Nmg6prhZnkEFYENzybkv1Y0UddC1NuPqFE/edit?gid=21098626#gid=21098626"),
+		    #"Profitability - Dashboard - 2022_26_Table" = Source{[name="Profitability - Dashboard - 2022_26",ItemKind="Table"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Profitability - Dashboard - 2022_26_Table", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Status", type text}, {"Clients", type text}, {"Total", type number}, {"Retainer", Int64.Type}, {"Website", Int64.Type}, {"Incentive", type number}, {"Social Media", type any}, {"Gross", type number}, {"Expenses", type text}, {"Cost", type number}, {"Target Revenue", Int64.Type}, {"Target Incentive", Int64.Type}, {"New Business - One-time", Int64.Type}, {"New Business - Retainer", Int64.Type}, {"Total Cash-In", Int64.Type}, {"Target BD", Int64.Type}, {"Target Ops", Int64.Type}, {"Retainer Revenue", Int64.Type}, {"Exit Month", type date}, {"Check Exit", Int64.Type}, {"Retainer Deal", Int64.Type}, {"", type any}, {"_1", type any}, {"_2", type any}, {"_3", type any}, {"_4", type any}, {"_5", type any}}),
+		    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Changed Type", {"Date"}),
+		  #"Changed column type" = Table.TransformColumnTypes(#"Removed Errors", {{"Date", type date}})
+		in
+		    #"Changed column type"
+	lineageTag: 575e4006-57f2-4778-94b1-8fbb887e8773
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

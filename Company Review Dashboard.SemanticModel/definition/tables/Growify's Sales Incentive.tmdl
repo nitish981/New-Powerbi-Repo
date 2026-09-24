@@ -1,0 +1,316 @@
+table 'Growify''s Sales Incentive'
+	lineageTag: ca01aab8-fcfa-4524-ab8a-81c9fcfec067
+
+	column Brands
+		dataType: string
+		lineageTag: 0e1adfbc-7b08-49e5-829f-2166b3d78f2a
+		summarizeBy: none
+		sourceColumn: Brands
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f3e8e249-6b31-4843-a0a9-e849f6fd3fdf
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Month
+		dataType: string
+		lineageTag: 77253c07-305d-49f0-8f52-b40811e2092b
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: string
+		lineageTag: 7a47e555-5bf6-4918-99ee-c7ce11d7322c
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: e033b20b-fe5d-4034-a9a0-557efd035bf7
+		summarizeBy: sum
+		sourceColumn: Sales Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Facebook Budget'
+		dataType: int64
+		lineageTag: d7c07798-6f9a-4553-a267-451efeb408f0
+		summarizeBy: sum
+		sourceColumn: Facebook Budget
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'SEM Budget'
+		dataType: int64
+		lineageTag: 33302eda-bb9c-4ce7-85b9-24e3a17d8185
+		summarizeBy: sum
+		sourceColumn: SEM Budget
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Growify''s Sales Incentive %'
+		dataType: double
+		formatString: 0
+		lineageTag: 1f31ee40-1165-42eb-8c08-b1a60ef27482
+		summarizeBy: sum
+		sourceColumn: Growify's Sales Incentive %
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Team'
+		dataType: string
+		lineageTag: e369f16d-2a0f-4ca8-8ae8-7dc76c2d221a
+		summarizeBy: none
+		sourceColumn: Brand Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FB Managers'
+		dataType: string
+		lineageTag: d4cd3008-e12c-42d6-b755-6da27f004858
+		summarizeBy: none
+		sourceColumn: FB Managers
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Managers'
+		dataType: string
+		lineageTag: 7c0b0675-3653-43c4-93fb-7eebd8542a5c
+		summarizeBy: none
+		sourceColumn: Brand Managers
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Status'
+		dataType: string
+		lineageTag: 15107510-887d-407b-b8ca-52e456140cc3
+		summarizeBy: none
+		sourceColumn: Brand Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Type'
+		dataType: string
+		lineageTag: d9e90cb6-5d18-46ba-baca-38444c2da4ad
+		summarizeBy: none
+		sourceColumn: Brand Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Incentive Level'
+		dataType: string
+		lineageTag: 56173307-b80d-4f99-a9ef-425760bfb45b
+		summarizeBy: none
+		sourceColumn: Incentive Level
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Done'
+		dataType: string
+		lineageTag: 541f4f80-dd7b-4299-bb7a-2865b43011fe
+		summarizeBy: none
+		sourceColumn: Sales Done
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Team'
+		dataType: string
+		lineageTag: 1c705ece-4a26-4116-a163-810a256ade33
+		summarizeBy: none
+		sourceColumn: Sales Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Google Managers'
+		dataType: string
+		lineageTag: 9d4a4a87-5af4-43ef-a9b3-f16b925da255
+		summarizeBy: none
+		sourceColumn: Google Managers
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retainer Deal'
+		dataType: int64
+		formatString: 0
+		lineageTag: b83c2731-acc9-4334-be93-601397a66e86
+		summarizeBy: sum
+		sourceColumn: Retainer Deal
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Growth Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 412a98c0-81c9-4fcb-a694-8dec917abf1a
+		summarizeBy: sum
+		sourceColumn: Growth Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Growth Meta Budget'
+		dataType: int64
+		formatString: 0
+		lineageTag: 448aa09b-858b-42c6-a92d-3e2086edfcec
+		summarizeBy: sum
+		sourceColumn: Growth Meta Budget
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Growth Google Budget'
+		dataType: int64
+		formatString: 0
+		lineageTag: c296303c-7f39-460b-aa7e-9886dc29c69f
+		summarizeBy: sum
+		sourceColumn: Growth Google Budget
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Growth Budget'
+		dataType: int64
+		formatString: 0
+		lineageTag: 32ae40df-418d-4342-9334-b2e9f84c2b9a
+		summarizeBy: sum
+		sourceColumn: Growth Budget
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Person'
+		dataType: string
+		lineageTag: ad4053cf-e069-4830-836a-66c2cf34dba3
+		summarizeBy: none
+		sourceColumn: Sales Person
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Store App.'
+		dataType: string
+		lineageTag: eb6ec198-4a0f-4c90-b775-715001e7ef4c
+		summarizeBy: none
+		sourceColumn: Sales Store App.
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Team Target'
+		dataType: string
+		lineageTag: 04f6439f-7b8a-43bb-b106-d519648efe00
+		summarizeBy: none
+		sourceColumn: Sales Team Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name' = FORMAT('Growify''s Sales Incentive'[Date],"MMM")
+		lineageTag: 6a2c7872-33b6-4b97-b9e5-349af588c375
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Budgets'
+		dataType: int64
+		lineageTag: 1c103019-39f6-4b2b-9ff2-e54f1461f286
+		summarizeBy: sum
+		sourceColumn: Total Budgets
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Client Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 32c9642d-46cf-44e1-aade-e10dd36f909c
+		summarizeBy: sum
+		sourceColumn: Client Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Average Revenue - Lost Client'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b704fb1-822e-4acc-b1b2-e0ff93a0c512
+		summarizeBy: sum
+		sourceColumn: Average Revenue - Lost Client
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Team Lead' =
+			
+			SWITCH(
+			    TRUE(),
+			    'Growify''s Sales Incentive'[Brand Team] = "Team 1", "Vishal Singh",
+			    'Growify''s Sales Incentive'[Brand Team] = "Team 2", "Shravya Shetty",
+			    'Growify''s Sales Incentive'[Brand Team] = "Team 3", "Deepak Sanwal",
+			    'Growify''s Sales Incentive'[Brand Team] = "Team 4", "Arpit Jain",
+			
+			    "Rohit Parashar" -- This is the optional "Else" result
+			)
+		lineageTag: af90ada4-05c2-4054-9506-5c5a8fd3e21b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TL Name Letter' = ```
+			
+			VAR SpacePosition = SEARCH(" ", 'Growify''s Sales Incentive'[Team Lead], 1, 0)
+			RETURN 
+			    UPPER(
+			        LEFT('Growify''s Sales Incentive'[Team Lead], 1) & 
+			        IF(SpacePosition > 0, MID('Growify''s Sales Incentive'[Team Lead], SpacePosition + 1, 1), "")
+			    )
+			```
+		lineageTag: 88bfb20c-8111-41fb-bd5d-090df0577989
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Type New' = IF('Growify''s Sales Incentive'[Brand Type] = "Retainer","Retainer Only","Incentive")
+		lineageTag: d44c35d3-3b86-4c8a-aa85-4bc416deda7b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Growify''s Sales Incentive' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zSc_Gx9BzqvKfQylToi_-jgQYqPZslv_o7YwCYh4I34/edit?gid=1925250974#gid=1925250974"),
+				    #"Growify's Sales Incentive_Table" = Source{[name="Growify's Sales Incentive",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Growify's Sales Incentive_Table", [PromoteAllScalars=true]),
+				    #"Removed Columns" = Table.RemoveColumns(#"Promoted Headers",{"Expected ROI"}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Removed Columns",{{"Brands", Text.Trim, type text}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Trimmed Text",{"Expected Growify Incentive"}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Removed Columns1", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Blank Rows",{{"SEM Budget", type number}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type1",null,0,Replacer.ReplaceValue,{"Sales Target"}),
+				    #"Replaced Errors" = Table.ReplaceErrorValues(#"Replaced Value", {{"SEM Budget", 0}}),
+				    #"Trimmed Text1" = Table.TransformColumns(Table.TransformColumnTypes(#"Replaced Errors", {{"SEM Budget", type text}}, "en-IN"),{{"SEM Budget", Text.Trim, type text}}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Trimmed Text1",null,"0",Replacer.ReplaceValue,{"SEM Budget"}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Replaced Value1",{{"SEM Budget", type number}, {"Facebook Budget", type number}}),
+				    #"Replaced Errors1" = Table.ReplaceErrorValues(#"Changed Type2", {{"Facebook Budget", 0}}),
+				    #"Replaced Errors2" = Table.ReplaceErrorValues(#"Replaced Errors1", {{"Sales Target", 0}}),
+				    #"Added Custom" = Table.AddColumn(#"Replaced Errors2", "Total Budgets", each [Facebook Budget] + [SEM Budget]),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Added Custom",{"Total Budget"}),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Removed Columns2",{{"Total Budgets", Int64.Type}, {"Date", type date}, {"Sales Target", Int64.Type}, {"Facebook Budget", Int64.Type}, {"SEM Budget", Int64.Type}, {"Growify's Sales Incentive %", Percentage.Type}, {"Growth Target", Int64.Type}, {"Growth Meta Budget", Int64.Type}, {"Growth Google Budget", Int64.Type}, {"Growth Budget", Int64.Type}, {"Client Target", Int64.Type}, {"Average Revenue - Lost Client", Int64.Type}, {"Retainer Deal", Int64.Type}})
+				in
+				    #"Changed Type3"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

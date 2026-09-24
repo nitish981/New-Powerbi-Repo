@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "fef2ad40a00aa34d8c18",
+      "displayName": "customer journey",
+      "children": [
+        "ee1b89934a78d2506410"
+      ]
+    },
+    {
+      "name": "b97120c6930290d00b1b",
+      "displayName": "Group 3",
+      "children": [
+        "9098b5758a46111d5e3f",
+        "eae569ba79eda27b1ba5"
+      ]
+    }
+  ]
+}

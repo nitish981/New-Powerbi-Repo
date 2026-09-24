@@ -1,0 +1,98 @@
+table Sheet1
+	lineageTag: ecfc9d0c-5913-453e-9452-0c6baee7eb8a
+
+	column Brands
+		dataType: string
+		lineageTag: 109e3b08-b619-4c8b-bdfd-0e4ea3b82d66
+		summarizeBy: none
+		sourceColumn: Brands
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3af5f741-7eb6-4cf0-b61f-0790c2ebb112
+		summarizeBy: none
+		sourceColumn: Month
+
+		variation Variation
+			isDefault
+			relationship: bc810fd1-7b2e-42c6-b57d-729fae324d33
+			defaultHierarchy: LocalDateTable_a5fa466c-63d4-4037-8d01-3e800ebdbdc9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Team
+		dataType: string
+		lineageTag: 155c07a6-82ca-4263-9857-21df5a3131ed
+		summarizeBy: none
+		sourceColumn: Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column Priority
+		dataType: string
+		lineageTag: 1c39d839-a76c-46bd-8044-89d9b7bd5526
+		summarizeBy: none
+		sourceColumn: Priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 3421a9aa-0111-41ae-9b33-5a8391d9bd80
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Manager'
+		dataType: string
+		lineageTag: a1245c06-edfa-4a5f-8210-9111b98c3f4e
+		summarizeBy: none
+		sourceColumn: Brand Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FB Manager'
+		dataType: string
+		lineageTag: 55b4ff39-c114-4d49-9113-af8befda7b7f
+		summarizeBy: none
+		sourceColumn: FB Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Google Manager'
+		dataType: string
+		lineageTag: 025505a1-fdf0-458e-a914-da81cb95e2f1
+		summarizeBy: none
+		sourceColumn: Google Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exit Month Sales'
+		dataType: string
+		lineageTag: 3398af9b-839e-48b6-870e-f6a6b60ea1d4
+		summarizeBy: none
+		sourceColumn: Exit Month Sales
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sheet1 = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1QIhRnXgKGZ1JcsWDlorc-n8mlFvbvuGN4w3RPtQuLsM/edit?gid=0#gid=0"),
+				    Sheet1_Table = Source{[name="Sheet1",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Brands", type text}, {"Month", type date}, {"Team", type text}, {"Priority", type any}, {"Status", type text}, {"Brand Manager", type text}, {"FB Manager", type text}, {"Google Manager", type text}, {"Exit Month Sales", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

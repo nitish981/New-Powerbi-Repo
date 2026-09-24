@@ -1,0 +1,1538 @@
+createOrReplace
+
+	ref table 'ALl measures'
+
+		measure 'Achieved Differential' = [Actual Sales]-[MTD Target (Growth)]
+			formatString: #,0
+			lineageTag: bf7923ca-bc10-40b1-9f9f-158fb58a7999
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Achieved Differential (Projected)' = [Actual Sales]-[MTD Target (Projected)]
+			lineageTag: 38bbe8d8-7244-41dd-85e6-b69142368bae
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Actual Sales' = [Total Sales] - [PrevMonthReturns]
+			formatString: #,0
+			lineageTag: f7560219-5c1b-4890-8acc-1feebe5a6ba4
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Average Orders Value' = AVERAGE('Shopify Overall Share'[Total_Sales__Shopify])
+			lineageTag: 6c5a7f23-7823-4c1c-a76a-b76f5402f9d9
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Budget Exhausted %' = ```
+
+				DIVIDE(
+				    ([Meta Spent] + [Google Spent]),
+				    [Projected Spent],
+				    0
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 106c7ae9-65df-4a5b-b20e-03d999f71494
+
+		measure 'Budget Exhausted % (Growth)' = ```
+
+				DIVIDE(
+				    ([Meta Spent] + [Google Spent]),
+				    [Growth Budget],
+				    0
+				)
+				```
+			lineageTag: 3dea0340-2644-46b0-b762-a69937e40729
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Campaign_Category
+			lineageTag: 79efbfce-499f-4d93-ae0b-5ac546d10b6f
+
+		measure 'Contact Via Ads' = 
+
+				var _result = SUM('Facebook Ads Share BI'[Messaging_Conversations_Started__Facebook_Ads])
+				RETURN
+				IF(ISBLANK(_result),0,_result)
+			formatString: 0
+			lineageTag: 48f675ca-1952-4d9d-8de6-ee41356b5296
+
+		measure 'Contacts Via Website' = 
+
+				var _result = SUM('Facebook Ads Share BI'[Website_Contacts__Facebook_Ads])
+				RETURN
+				IF(ISBLANK(_result),0,_result)
+			formatString: 0
+			lineageTag: f08a09ae-ad2e-42b9-bb88-68765a4eb61b
+
+		measure 'Google Revenue' = ```
+				SUM('Google Overall Share BI'[Conv__Value__Google_Ads])
+				```
+			formatString: #,0
+			lineageTag: 4e1f8f9d-14b9-48fd-b0ce-e46fbaeca1fc
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Google ROAS' = CALCULATE([Google Revenue] / [Google Spent])
+			lineageTag: 617e3278-cd37-4e4e-a5a3-986c89604705
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Google Spent' = SUM('Google Overall Share BI'[Cost])
+			formatString: #,0
+			lineageTag: 9c9bfd01-ad2a-4ff7-b287-2fd7d58e961c
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Gross Sales' = SUM('Shopify Overall Share'[Gross_Sales__Shopify])
+			formatString: #,0
+			lineageTag: 9db1d07c-6fd9-4ac3-ba24-0eecc13efaa3
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Growth Budget' = SUM('Growify''s Sales Incentive'[Growth Budget])
+			formatString: #,0
+			lineageTag: c21aab3e-ad09-441c-af20-d05a1acfa0ba
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Growth Target' = SUM('Growify''s Sales Incentive'[Growth Target])
+			formatString: #,0
+			lineageTag: 5bd28c03-9e7b-46fb-b6d5-68674acf1ae8
+
+		measure Item_Sold = SUM('Shopify Overall Share'[Items_Sold__Shopify])
+			formatString: 0
+			lineageTag: f76369bb-ad11-440c-a849-6dcfa1161692
+
+		measure 'Meta Budget' = 
+
+				var _result = SUM('Growify''s Sales Incentive'[Facebook Budget])
+				RETURN
+				IF(ISBLANK(_result),0,_result)
+			formatString: #,0
+			lineageTag: 9b9b800f-188c-4808-be71-1d92c665a4de
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Meta Revenue' = SUM('Facebook Ads Share BI'[Purchases_Conversion_Value__Facebook_Ads])
+			lineageTag: b81c7818-cc5c-4bf4-8a4c-7391c4b3e565
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Meta ROAS' = DIVIDE([Meta Revenue],[Meta Spent])
+			formatString: 0.0
+			lineageTag: 363b11da-7799-41bb-8b64-381619b2a033
+
+		measure 'Meta Spent' = SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads])
+			formatString: #,0
+			lineageTag: e5498c33-2989-4a3f-8a5c-ed75964ed110
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'MoM % (Same Date Range)' = ```
+
+				VAR MinDate = MIN('Shopify Overall Share'[Date])
+				VAR MaxDate = MAX('Shopify Overall Share'[Date])
+				VAR CurrentSales =
+				    CALCULATE(
+				        SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+				        DATESBETWEEN('Shopify Overall Share'[Date], MinDate, MaxDate)
+				    )
+				VAR PrevSales =
+				    CALCULATE(
+				        SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+				        DATESBETWEEN(
+				            'Shopify Overall Share'[Date],
+				            EDATE(MinDate, -1),
+				            EDATE(MaxDate, -1)
+				        )
+				    )
+				RETURN
+				IF(
+				    NOT ISBLANK(PrevSales),
+				    DIVIDE(CurrentSales - PrevSales, PrevSales),
+				    BLANK()
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: d749d78a-a138-413a-9374-58e4fe988644
+
+		measure 'MTD Target (Growth)' = (DIVIDE([Growth Target],MAX(DateTable[DaysInMonth])))*MAX(DateTable[Ndays])
+			formatString: #,0
+			lineageTag: d6c475f2-f66e-40cf-bc50-f90de9ff132f
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'MTD Target (Projected)' = (DIVIDE([Projected Target],MAX(DateTable[DaysInMonth])))*MAX(DateTable[Ndays])
+			lineageTag: 596a82bb-0d02-4096-8227-0461592c68ad
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Net Sale' = SUM('Shopify Overall Share'[Net_Sales__Shopify])
+			lineageTag: 12ad458d-faf9-46cb-9cc1-5e349253bd6d
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Orders = SUM('Shopify Overall Share'[Orders__Shopify])
+			formatString: 0
+			lineageTag: 5ee83193-face-4950-b17b-12e4c93c5797
+
+		measure PrevMonthReturns = ```
+
+				CALCULATE(
+				    SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+				    FILTER(
+				        'Shopify Overall Share',
+				        DATEDIFF('Shopify Overall Share'[Order_Date], 'Shopify Overall Share'[Date], MONTH) >= 1
+				    )
+				)
+				```
+			lineageTag: 2074d443-4c86-4bf5-98c9-6dfc3c32d972
+
+			formatStringDefinition = ""
+
+		measure 'Projected Spent' = ```
+
+				 var _result = SUM('Growify''s Sales Incentive'[Total Budgets])
+				 RETURN
+				 IF(ISBLANK(_result),0,_result)
+				```
+			lineageTag: cf3e7a86-c0db-470b-9dc6-9386e88afe53
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Projected Target' = SUM('Growify''s Sales Incentive'[Sales Target])
+			formatString: #,0
+			lineageTag: bb01ece9-9e22-4001-9ba0-0fe7c6a82801
+
+		measure Return_rate = CALCULATE(SUM('Shopify Overall Share'[Returns__Shopify])/SUM('Shopify Overall Share'[Gross_Sales__Shopify]))
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 1d93efd4-75ce-4675-9d1f-e03e75ced991
+
+		measure Returns = SUM('Shopify Overall Share'[Returns__Shopify])
+			formatString: #,0
+			lineageTag: 823af39d-6c7b-4618-9f8d-b29a3c722901
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'ROI - Actual' = DIVIDE([Actual Sales] , [Total Spent])
+			lineageTag: 7b00dcff-c38e-4d91-a2e4-99879584320f
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'ROI - Gross' = CALCULATE(DIVIDE([Gross Sales],[Total Spent]))
+			formatString: 0.0
+			lineageTag: 09dee550-5f76-427c-88b0-be812a0fcac9
+
+		measure 'ROI - Total' = CALCULATE(DIVIDE([Total Sales],[Total Spent]))
+			formatString: 0.0
+			lineageTag: 97fb2cbf-3944-4b80-b8b1-22ba274bd504
+
+		measure 'Sales % Achieved' = DIVIDE([Actual Sales], [Projected Target])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: c12923d5-a393-48b4-a9e1-d94116542370
+
+		measure 'Sales % Achieved (Growth)' = DIVIDE([Actual Sales], [Growth Target])
+			lineageTag: 989d747a-bb48-4f05-9f65-ca87d37f8f42
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Sales Range Measure' = ```
+
+				VAR NetSalesValue = [Net Sale]  // Your Net Sales measure
+				RETURN
+				SWITCH(
+				    TRUE(),
+				    NetSalesValue >= 0 && NetSalesValue <= 3000, "0-3k",
+				    NetSalesValue >= 3001 && NetSalesValue <= 5000, "03k-05k",
+				    NetSalesValue >= 5001 && NetSalesValue <= 6000, "05k-06k",
+				    NetSalesValue >= 6001 && NetSalesValue <= 7000, "06k-07k",
+				    NetSalesValue >= 7001 && NetSalesValue <= 8000, "07k-08k",
+				    NetSalesValue >= 8001 && NetSalesValue <= 9000, "08k-09k",
+				    NetSalesValue >= 9001 && NetSalesValue <= 10000, "09k-10k",
+				    NetSalesValue >= 10001 && NetSalesValue <= 20000, "10k-20k",
+				    NetSalesValue >= 20001 && NetSalesValue <= 35000, "20k-35k",
+				    NetSalesValue >= 35001 && NetSalesValue <= 50000, "35k-50k",
+				    NetSalesValue >= 50001 && NetSalesValue <= 100000, "50k-1Lakh",
+				    NetSalesValue >= 100001 && NetSalesValue <= 150000, "1Lakh-1.5Lakh",
+				    NetSalesValue > 150001, "1.5Lakh+",
+				    BLANK()
+				)
+				```
+			lineageTag: 8723c394-eb2d-4d2b-b284-1007c9d85b70
+
+		measure 'Store Sales' = SUM('Store Sales'[Net Sales])
+			lineageTag: b5349556-98db-410d-bcd1-eae88bc23323
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Total Activities' = COUNT(Meta_Activities_Log[Timestamp])
+			formatString: 0
+			lineageTag: 6dbf6ee8-82cd-49c9-8751-27cc29453f2c
+
+		measure 'Total Sales' = ```
+				SUM('Shopify Overall Share'[Total_Sales__Shopify]) + SUM('Store Sales'[Net Sales])
+				```
+			formatString: #,0
+			lineageTag: 011bbc86-9152-43c6-b4b6-a8913ef9b681
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Total Spent' = CALCULATE([Meta Spent] + [Google Spent])
+			formatString: #,0
+			lineageTag: d676b2f2-efaf-4536-9afc-6d19da593c82
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+	ref table 'fb Measures'
+
+		measure 'Add To Cart' = SUM('Facebook Ads Share BI'[Adds_to_Cart__Facebook_Ads])
+			formatString: 0
+			lineageTag: d030dd20-d85e-46fb-b043-90849486794f
+
+		measure Channel
+			lineageTag: 328a5e54-20b7-4819-8109-0ef218cfa31a
+
+		measure Clicks = SUM('Facebook Ads Share BI'[Link_Clicks__Facebook_Ads])
+			formatString: 0
+			lineageTag: 14aa25f0-ed28-4584-9e81-19721bd77487
+
+		measure 'Conversion Rate' = SUM('Facebook Ads Share BI'[Purchases__Facebook_Ads]) / SUM('Facebook Ads Share BI'[Link_Clicks__Facebook_Ads])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: a64e1023-2e82-45e8-b4a1-c082307dc591
+
+		measure 'Cost Per Cart' = SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads])/SUM('Facebook Ads Share BI'[Adds_to_Cart__Facebook_Ads])
+			lineageTag: f9e6eb85-3457-4aab-bc65-6b150bb8afaf
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Cost per Checkout' = SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads]) / SUM('Facebook Ads Share BI'[Checkouts_Initiated__Facebook_Ads])
+			lineageTag: e2060889-201d-4b08-a15d-4166f96b3049
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Cost Per Pageview' = SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads])/SUM('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads])
+			lineageTag: f0ea6cc0-44b2-48f8-82da-04e6978936a0
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Cost per Payment Info' = SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads]) / SUM('Facebook Ads Share BI'[Adds_of_Payment_Info__Facebook_Ads])
+			lineageTag: 7e2d4868-a80b-42ec-b0b8-f0ec84a4aeff
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Cost per Purchase' = SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads]) / SUM('Facebook Ads Share BI'[Purchases__Facebook_Ads])
+			lineageTag: 025d9a29-cb3f-4f7d-9ffc-9268f6a6ada5
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure CPC = ```
+				[Total Spent] / [Clicks]
+				```
+			lineageTag: 181a03e4-203a-46a6-8bfb-c2cbf7278dc0
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'CPL (Cost Per Lead)' = ```
+				DIVIDE(
+				    SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads]),
+				    SUM('Facebook Ads Share BI'[Website_Contacts__Facebook_Ads] ) + SUM( 'Facebook Ads Share BI'[Messaging_Conversations_Started__Facebook_Ads] ),
+				    0
+				)
+				```
+			lineageTag: 484f81c2-3b03-49c7-82e3-5f66034a7832
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure CPM = ([Total Spent] / 'fb Measures'[impresion]) * 1000
+			lineageTag: a3fd4242-3ed5-4ed7-8516-5daa2ca784d4
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure CTR = DIVIDE([Clicks],[impresion])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: f5dc73f4-7caa-42fa-b56f-5d8c59b58c9b
+
+		measure impresion = SUM('Facebook Ads Share BI'[Impressions__Facebook_Ads])
+			formatString: #,0
+			lineageTag: 61cedb02-cce7-444d-8de1-19c620cd46bc
+
+		measure 'Landing Page to Cart' = sum('Facebook Ads Share BI'[Adds_to_Cart__Facebook_Ads])/SUM('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 23ae9185-11a3-4702-80ac-c6995d544691
+
+		measure 'Landing Page to Checkout' = SUM('Facebook Ads Share BI'[Checkouts_Initiated__Facebook_Ads]) / SUM('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 6be5b9b0-3bad-4c30-9053-05202741ca28
+
+		measure 'Landing to Payment Info' = SUM('Facebook Ads Share BI'[Adds_of_Payment_Info__Facebook_Ads]) / SUM('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 644fe290-8e43-459e-a894-328a443b9e6f
+
+		measure 'Link click to Page view' = sum('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads])/sum('Facebook Ads Share BI'[Link_Clicks__Facebook_Ads])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 9d95cc0f-81cf-4355-9e09-48288251cadb
+
+		measure 'Meta Purchase' = SUM('Facebook Ads Share BI'[Purchases__Facebook_Ads])
+			formatString: 0
+			lineageTag: 3220defd-c21d-4d94-9b5b-6763f6a8e0e7
+
+		measure 'MOM% AddToCart' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Add To Cart]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Adds_to_Cart__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 3a0589f5-db47-4c90-8bfa-875eed5dd495
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Checkout Initiated' = 
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Checkouts_Initiated__Facebook_Ads])
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Checkouts_Initiated__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+			lineageTag: b9e790bc-4e60-48ac-b65d-11acb61aed27
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% ClicksAll' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Clicks_all__Facebook_Ads])
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Clicks_all__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 48927cbd-96c4-411e-bdb1-cc7116e07f70
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Conversion Rate' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Conversion Rate]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Conversion Rate],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 62e0062d-d9e5-4fb7-afff-968dfcafa6c5
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Cost per Cart' = 
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Cost Per Cart]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Cost Per Cart],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+			lineageTag: 91c0fd9b-d146-4006-bcfe-a6da3abd1e79
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Cost per Checkout' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Cost per Checkout]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Cost per Checkout],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 6fc80d7b-6612-4d63-9bfe-39bed26e5b76
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Cost per Page View' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Cost Per Pageview]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Cost Per Pageview],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 0d7dfc44-8c91-4e6a-88ba-9585f55afcec
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Cost per Payment Info' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Cost per Payment Info]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Cost per Payment Info],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: b87ab70f-f80c-4c7d-b4e5-b7d6d12681ee
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Cost per Purchase' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Cost per Purchase]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Cost per Purchase],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 521547ab-1124-43aa-8f88-5ed71835d86a
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% CPC' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [CPC]
+
+				VAR _PM =
+				    CALCULATE(
+				        [CPC],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 76200177-cf64-4881-97dd-a168924a07c3
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% CPL' = 
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [CPL (Cost Per Lead)]
+
+				VAR _PM =
+				    CALCULATE(
+				        [CPL (Cost Per Lead)],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+			lineageTag: d7076d06-6e58-4a49-8317-bb84d54044ea
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% CPM' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [CPM]
+
+				VAR _PM =
+				    CALCULATE(
+				        [CPM],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 5d64a3a6-3865-4c08-b519-4b689606c09a
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% CTR' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [CTR]
+
+				VAR _PM =
+				    CALCULATE(
+				        [CTR],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 3a538df6-71f3-456c-842e-145ca5f19f8f
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Impression' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [impresion]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Impressions__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 74948503-b6b7-4433-b100-924ab12f1312
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Landing Page View' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads])
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Landing_Page_Views__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 473a68db-a60f-4c26-88a8-f966ac22ae45
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% LinkClicks' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Link_Clicks__Facebook_Ads])
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Link_Clicks__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 4abd8d08-943b-43d1-b5d4-1d42aabf2a76
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Meta Purchase' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Purchases__Facebook_Ads])
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Purchases__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: afb5ecab-f0d0-49c3-94a8-2fec4c77e6a6
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Page to Cart' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Landing Page to Cart]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Landing Page to Cart],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 724411e1-7dae-4915-94eb-0e0742052d77
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Page to Checkout' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Landing Page to Checkout]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Landing Page to Checkout],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: ea79de05-a04b-4ad5-8798-44fd5e401c44
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Page to Payment info' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Landing to Payment Info]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Landing to Payment Info],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: f6810f06-1085-4304-b239-9e8a7dcb63f0
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Page Views' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Link click to Page view]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Link click to Page view],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: c74e20d4-9fd1-4e76-8344-12ea6f191d7b
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Payment Info' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Adds_of_Payment_Info__Facebook_Ads])
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Adds_of_Payment_Info__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 7c841159-3fc7-44f8-8d80-13294c7c1705
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+	ref table 'Google Measures'
+
+		measure 'G_Conversion Rate %' = SUM('Google Overall Share BI'[Conversions__Google_Ads]) / SUM('Google Overall Share BI'[Clicks__Google_Ads])
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 99476910-a53e-4f16-8fd1-cbd4eaa44c36
+
+		measure G_Impression = SUM('Google Overall Share BI'[Impressions__Google_Ads])
+			formatString: 0
+			lineageTag: b6c37cc0-fb1e-4aab-b438-3e351d130d4a
+
+		measure Google_CPC = CALCULATE(DIVIDE([Google Spent],SUM('Google Overall Share BI'[Clicks])))
+			lineageTag: 99364666-8403-4ad7-b581-901ae3f56129
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Google_CPM = ([Google Spent] / [G_Impression]) *1000
+			lineageTag: fefe3276-d7aa-48c7-b887-ac88a9e0e1e5
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Google_CTR = CALCULATE(DIVIDE(SUM('Google Overall Share BI'[Clicks]),SUM('Google Overall Share BI'[Impressions__Google_Ads])))
+			formatString: 0%;-0%;0%
+			lineageTag: 49a8e5a3-b920-4623-8f66-7ee99f8dbeee
+
+		measure 'MoM% Add to cart Interaction' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Interactions__Google_Ads]),
+				        FILTER(
+				            'Google Overall Share BI',
+				            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "Add to cart")
+				        )
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Interactions__Google_Ads]),
+				        FILTER(
+				            'Google Overall Share BI',
+				            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "Add to cart")
+				        ),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 4919642b-a68b-46a2-8cae-2481819c53af
+
+		measure 'MoM% ALL_Conversion' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[All_Conv___Google_Ads])   -- Your interaction column
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[All_Conv___Google_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: e9cc8d5c-a6ea-4d83-a08a-2641f9b975e0
+
+		measure 'MoM% Conversion' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Conversions__Google_Ads])   -- Your interaction column
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Conversions__Google_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: c21755fc-b1bb-4b0f-a5f9-0998d903df33
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Conversion_Value' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[All_Conv__Value__Google_Ads])   -- Your interaction column
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[All_Conv__Value__Google_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: ed104141-9b69-463b-a905-518ae8fd264d
+
+		measure 'MoM% G_Clicks' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Clicks__Google_Ads])   -- Your interaction column
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Clicks__Google_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 20b002e0-9660-41fc-97c1-026124029cf1
+
+		measure 'MoM% G_CPC' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        [Google_CPC]    -- Use measure directly
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        'Google Measures'[Google_CPC],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: cf96c8ce-b5b8-42ee-aa94-aa7394df19c2
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% G_CTR' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        [Google_CTR]    -- Use measure directly
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        'Google Measures'[Google_CTR],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: cae7688f-30f9-45c3-9bbc-95bbef8177aa
+
+		measure 'MOM% G_Impression' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+				VAR _CM = [G_Impression]
+				VAR _PM =
+				    CALCULATE(
+				        [G_Impression],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 71325944-95f7-4b93-b88d-d8c0238f8824
+
+		measure 'MOM% G_Revenue' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Google Revenue]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Conv__Value__Google_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 4de27e0c-4ef1-4caa-9c0e-8a0a2a6043b2
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% G_ROAS' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Google ROAS]
+
+				VAR _PM =
+				    CALCULATE(
+				        DIVIDE([Google Revenue],[Google Spent],0),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: fa5c07cc-88be-4909-a5a2-b7052bced2b0
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% G_Spent' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Google Spent]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Cost]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 35347739-af82-4f9b-8158-fa1fa18876df
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Google CTR' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Google_CTR]
+
+				VAR _PM =
+				    CALCULATE(
+				        [Google_CTR],
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: e7a9cb02-e952-4a3e-bebc-d9505ea8518a
+
+		measure 'MoM% interaction' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Interactions__Google_Ads])   -- Your interaction column
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[Interactions__Google_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: e4e67c2d-76b9-4d61-8a13-e74c1d4184ac
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MoM% Pageview Interaction' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[All_Conv___Google_Ads]),
+				        FILTER(
+				            'Google Overall Share BI',
+				            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "PAGE_VIEW")
+				        )
+				    )
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Google Overall Share BI'[All_Conv___Google_Ads]),
+				        FILTER(
+				            'Google Overall Share BI',
+				            CONTAINSSTRING('Google Overall Share BI'[Conversion_category_name__Google_Ads], "PAGE_VIEW")
+				        ),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: a51ed5e7-d457-4d95-9229-829cde8c6b76
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+	ref table 'Mtd_sales Measures'
+
+		measure Left_days = MAX('DateTable'[DaysInMonth])
+			formatString: 0
+			lineageTag: 41fc30fa-badb-4565-b3c0-e506ae37ee17
+
+		measure Left_google = SUM('Growify''s Sales Incentive'[SEM Budget]) - [Google Spent]
+			formatString: #,0
+			lineageTag: da881603-698a-4de1-985e-c770e45699a1
+
+		measure Left_Meta = SUM('Growify''s Sales Incentive'[Facebook Budget]) - [Meta Spent]
+			lineageTag: d06d6ba5-f19c-4d83-bca6-116bffca4ae5
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Left_ROI = ([Growth Target] -([Total Sales]))/([Projected Spent]-(([Meta Spent]) + ([Google Spent])))
+			lineageTag: b7c671c6-2c6a-4a4e-91e4-82b96e56d5b6
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Left_spent = ```
+				[Projected Spent] - ([Meta Spent] + [Google Spent])
+				```
+			lineageTag: d61df994-eb83-428a-8514-f44281a3738e
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Left_target = [Projected Target] - [Total Sales]
+			lineageTag: 2f4d6426-14f4-4a1d-a4a9-40a8053b3103
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure per_day_Google_target = ```
+
+				VAR _result = DIVIDE(
+				    SUM('Growify''s Sales Incentive'[SEM Budget]) - [Google Spent],
+				    MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays])
+				)
+				RETURN
+				IF(ISBLANK(_result),0, _result)
+				```
+			lineageTag: 26941b9e-27d0-4f1d-b465-c5c8726a77e2
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure per_day_Meta_targer = ```
+
+				VAR _result =
+				DIVIDE(
+				    SUM('Growify''s Sales Incentive'[Facebook Budget]) - [Meta Spent],
+				    MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays])
+				)
+				RETURN
+				IF(ISBLANK(_result),0,_result)
+				```
+			lineageTag: 3de96d08-530d-4af5-a458-c45bff8f89f0
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Per_day_ROI = ```
+
+				DIVIDE(
+				    [Growth Target] - [Total Sales],
+				    [Growth Budget] - (
+				        COALESCE([Meta Spent], 0) +
+				        COALESCE([Google Spent], 0)
+				    )
+				)
+				```
+			formatString: 0.0
+			lineageTag: 89a251d0-c55e-4edd-a0fc-4de082d8d588
+
+		measure per_day_Spend_target = ```
+
+				VAR _result =
+				DIVIDE(
+				    [Projected Spent] - [Total Spent],
+				    MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays])
+				)
+				RETURN
+				IF(ISBLANK(_result),0,_result)
+				```
+			lineageTag: 73ec9ab1-ee30-4f5d-a2fe-6eb374461d2c
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure per_day_targer = ```
+
+				   VAR _result = ([Projected Target] - [Total Sales]) /
+				    (MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays]))
+				    RETURN
+				    IF(ISBLANK(_result),0,_result)
+				```
+			lineageTag: 111aa6d4-5015-4ebd-b45b-b4be508e7da8
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Target_ROI = ```
+
+				 var _result = [Growth Target] / [Projected Spent]
+				 RETURN
+				 IF(ISBLANK(_result),0 ,_result)
+				```
+			lineageTag: 0103aeaa-dfe8-41f5-b55f-00324b300e47
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+	ref table 'PreviousPeriod Measures'
+
+		measure 'MOM% Meta ROAS' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Meta ROAS]   -- Current selected period ROAS
+
+				VAR _PM =
+				    CALCULATE(
+				        DIVIDE([Meta Revenue], [Meta Spent], 0),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 0c94e014-ca35-473b-9af3-39cb9c50758e
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Orders' = 
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+				VAR _CM = [Orders]   -- Current Month selected orders
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Shopify Overall Share'[Orders__Shopify]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+			lineageTag: 1717865f-2832-4e03-90b7-b3f13190605d
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Revenue' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Meta Revenue]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Purchases_Conversion_Value__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: 46e35d4e-2871-473b-997b-2d07bf506974
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Spent' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Meta Spent]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+				```
+			lineageTag: dbc54d4e-7a5d-4699-a8ed-2b499c706c2b
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'MOM% Total Sales' = 
+
+				VAR _MinDate = MIN('DateTable'[Date])
+				VAR _MaxDate = MAX('DateTable'[Date])
+
+				VAR _CM = [Total Sales]
+
+				VAR _PM =
+				    CALCULATE(
+				        SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+				        DATESBETWEEN(
+				            'DateTable'[Date],
+				            EDATE(_MinDate, -1),
+				            EDATE(_MaxDate, -1)
+				        )
+				    )
+				RETURN
+				DIVIDE(_CM - _PM, _PM)
+			lineageTag: ab98a7b5-5358-4de7-842f-0e2ded207258
+
+			formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+		measure 'New Customers' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date].[Date])
+				VAR _MaxDate = MAX('DateTable'[Date].[Date])
+				RETURN
+				CALCULATE(
+				    DISTINCTCOUNT('Shopify Overall Share'[Customer_ID__Shopify]),
+				    FILTER(
+				        VALUES('Shopify Overall Share'[Customer_ID__Shopify]),
+				        CALCULATE(MIN('Shopify Overall Share'[Order_Created_At__Shopify])) >= _MinDate &&
+				        CALCULATE(MIN('Shopify Overall Share'[Order_Created_At__Shopify])) <= _MaxDate
+				    )
+				)
+				```
+			formatString: 0
+			lineageTag: 741a9bd2-5014-4268-84dc-0055431d3f63
+
+		measure 'Returning Customers' = ```
+
+				VAR _MinDate = MIN('DateTable'[Date].[Date])
+				VAR _MaxDate = MAX('DateTable'[Date].[Date])
+				RETURN
+				CALCULATE(
+				    DISTINCTCOUNT('Shopify Overall Share'[Customer_ID__Shopify]),
+				    FILTER(
+				        VALUES('Shopify Overall Share'[Customer_ID__Shopify]),
+				        CALCULATE(MIN('Shopify Overall Share'[Order_Created_At__Shopify])) < _MinDate
+				    )
+				)
+				```
+			formatString: 0
+			lineageTag: d444e0d7-6a83-4a3e-80d7-6738f722f94e

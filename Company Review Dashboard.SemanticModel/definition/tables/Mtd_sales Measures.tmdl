@@ -1,0 +1,119 @@
+table 'Mtd_sales Measures'
+	lineageTag: 5377aa3a-7c3e-4721-a238-0b357021721a
+
+	measure Left_target = [Projected Target] - [Store + Total Sales]
+		lineageTag: 2f4d6426-14f4-4a1d-a4a9-40a8053b3103
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Left_spent = [Projected Spent] - ([Meta Spent] + [Google Spent])
+		lineageTag: d61df994-eb83-428a-8514-f44281a3738e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Left_Meta = SUM('Growify''s Sales Incentive'[Facebook Budget]) - [Meta Spent]
+		lineageTag: d06d6ba5-f19c-4d83-bca6-116bffca4ae5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Left_google = SUM('Growify''s Sales Incentive'[SEM Budget]) - [Google Spent]
+		formatString: #,0
+		lineageTag: da881603-698a-4de1-985e-c770e45699a1
+
+	measure Left_ROI = ([Projected Target] -([Store + Total Sales]))/([Projected Spent]-(([Meta Spent]) + ([Google Spent])))
+		lineageTag: b7c671c6-2c6a-4a4e-91e4-82b96e56d5b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure per_day_targer = ```
+			
+			   VAR _result = ([Projected Target] - [Store + Total Sales]) /
+			    (MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays]))
+			    RETURN
+			    IF(ISBLANK(_result),0,_result)
+			```
+		lineageTag: 111aa6d4-5015-4ebd-b45b-b4be508e7da8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Left_days = MAX('DateTable'[DaysInMonth])
+		formatString: 0
+		lineageTag: 41fc30fa-badb-4565-b3c0-e506ae37ee17
+
+	measure per_day_Spend_target =
+			
+			VAR _result =
+			DIVIDE(
+			    [Projected Spent] - [Total Spent],
+			    MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays])
+			)
+			RETURN
+			IF(ISBLANK(_result),0,_result)
+		lineageTag: 73ec9ab1-ee30-4f5d-a2fe-6eb374461d2c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure per_day_Meta_targer =
+			
+			VAR _result =
+			DIVIDE(
+			    SUM('Growify''s Sales Incentive'[Facebook Budget]) - [Meta Spent],
+			    MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays])
+			)
+			RETURN
+			IF(ISBLANK(_result),0,_result)
+		lineageTag: 3de96d08-530d-4af5-a458-c45bff8f89f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure per_day_Google_target =
+			
+			VAR _result = DIVIDE(
+			    SUM('Growify''s Sales Incentive'[SEM Budget]) - [Google Spent],
+			    MAX('DateTable'[DaysInMonth]) - MAX('DateTable'[Ndays])
+			)
+			RETURN
+			IF(ISBLANK(_result),0, _result)
+		lineageTag: 26941b9e-27d0-4f1d-b465-c5c8726a77e2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Per_day_ROI =
+			
+			DIVIDE(
+			    [Projected Target] - [Store + Total Sales],
+			    [Projected Spent] - (
+			        COALESCE([Meta Spent], 0) +
+			        COALESCE([Google Spent], 0)
+			    )
+			)
+		formatString: 0.0
+		lineageTag: 89a251d0-c55e-4edd-a0fc-4de082d8d588
+
+	measure Target_ROI = ```
+			
+			 var _result = [Projected Target] / [Projected Spent]
+			 RETURN
+			 IF(ISBLANK(_result),0 ,_result)
+			```
+		lineageTag: 0103aeaa-dfe8-41f5-b55f-00324b300e47
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: 7af7bc80-079e-4d1f-b95d-15c3fc429977
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Mtd_sales Measures' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 5a487496b6e84a66bac153ce27c218d5
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

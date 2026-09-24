@@ -1,0 +1,159 @@
+table 'PreviousPeriod Measures'
+	lineageTag: 1c8187c3-8cd9-402e-aedc-39232ca600d5
+
+	measure 'MOM% Spent' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Meta Spent]
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Facebook Ads Share BI'[Amount_Spent__Facebook_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: dbc54d4e-7a5d-4699-a8ed-2b499c706c2b
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MOM% Revenue' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Meta Revenue]
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Facebook Ads Share BI'[Purchases_Conversion_Value__Facebook_Ads]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: 46e35d4e-2871-473b-997b-2d07bf506974
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MOM% Meta ROAS' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Meta ROAS]   -- Current selected period ROAS
+			
+			VAR _PM =
+			    CALCULATE(
+			        DIVIDE([Meta Revenue], [Meta Spent], 0),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: 0c94e014-ca35-473b-9af3-39cb9c50758e
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MOM% Total Sales' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			
+			VAR _CM = [Total Sales]
+			
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Shopify Overall Share'[Total_Sales__Shopify]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: ab98a7b5-5358-4de7-842f-0e2ded207258
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'MOM% Orders' =
+			
+			VAR _MinDate = MIN('DateTable'[Date])
+			VAR _MaxDate = MAX('DateTable'[Date])
+			VAR _CM = [Orders]   -- Current Month selected orders
+			VAR _PM =
+			    CALCULATE(
+			        SUM('Shopify Overall Share'[Orders__Shopify]),
+			        DATESBETWEEN(
+			            'DateTable'[Date],
+			            EDATE(_MinDate, -1),
+			            EDATE(_MaxDate, -1)
+			        )
+			    )
+			RETURN
+			DIVIDE(_CM - _PM, _PM)
+		lineageTag: 1717865f-2832-4e03-90b7-b3f13190605d
+
+		formatStringDefinition = "+0.00%;-0.00%;0.00%"
+
+	measure 'New Customers' =
+			
+			VAR _MinDate = MIN('DateTable'[Date].[Date])
+			VAR _MaxDate = MAX('DateTable'[Date].[Date])
+			RETURN
+			CALCULATE(
+			    DISTINCTCOUNT('Shopify Overall Share'[Customer_ID__Shopify]),
+			    FILTER(
+			        VALUES('Shopify Overall Share'[Customer_ID__Shopify]),
+			        CALCULATE(MIN('Shopify Overall Share'[Order_Created_At__Shopify])) >= _MinDate &&
+			        CALCULATE(MIN('Shopify Overall Share'[Order_Created_At__Shopify])) <= _MaxDate
+			    )
+			)
+		formatString: 0
+		lineageTag: 741a9bd2-5014-4268-84dc-0055431d3f63
+
+	measure 'Returning Customers' =
+			
+			VAR _MinDate = MIN('DateTable'[Date].[Date])
+			VAR _MaxDate = MAX('DateTable'[Date].[Date])
+			RETURN
+			CALCULATE(
+			    DISTINCTCOUNT('Shopify Overall Share'[Customer_ID__Shopify]),
+			    FILTER(
+			        VALUES('Shopify Overall Share'[Customer_ID__Shopify]),
+			        CALCULATE(MIN('Shopify Overall Share'[Order_Created_At__Shopify])) < _MinDate
+			    )
+			)
+		formatString: 0
+		lineageTag: d444e0d7-6a83-4a3e-80d7-6738f722f94e
+
+	column Column
+		formatString: 0
+		lineageTag: df13311e-475d-402d-82bd-37ab1c39092c
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'PreviousPeriod Measures' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 309aba5305dc456e8b9674fa0be8c09d
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

@@ -1,0 +1,109 @@
+table DateSelection
+	lineageTag: 1ab2b555-2ef3-47a5-b966-89317b325139
+
+	column Date
+		formatString: dd/mm/yy hh:mm:ss AM/PM
+		lineageTag: 3943354a-6609-43e8-b340-31d0e8b064f3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 4bfc7728-d856-41d1-8c44-12cc0b176a19
+			defaultHierarchy: LocalDateTable_8a58cc92-eb4d-4bd2-89b4-7ad4c56f8661.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column Selection
+		lineageTag: 28d37600-3383-4ae8-996d-6c2cd01bfd39
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Selection]
+		sortByColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYear = FORMAT('DateSelection'[Date], "MMM YYYY")
+		lineageTag: b9bf8123-4e4e-49f5-b9b8-b5f453bfd079
+		summarizeBy: none
+		sortByColumn: MonthYearSort
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYearSort = YEAR('DateSelection'[Date]) * 100 + MONTH('DateSelection'[Date])
+		formatString: 0
+		lineageTag: 5c3029a2-8b78-4207-95eb-026dc9966d16
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name' = FORMAT('DateSelection'[Date], "MMMM")
+		lineageTag: 2836fccd-672d-41dc-8ee7-995f50015a6d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column SortOrder
+		formatString: 0
+		lineageTag: 3fbc4670-68d2-4fbb-ba95-1610e9416e5d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [SortOrder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DateSelection = calculated
+		mode: import
+		source = ```
+				
+				VAR TodayDate = TODAY()
+				
+				VAR StartOfThisMonth = DATE( YEAR(TodayDate), MONTH(TodayDate), 1 )
+				VAR StartOfThisYear  = DATE( YEAR(TodayDate), 1, 1 )
+				
+				VAR Last3_Start = EDATE(StartOfThisMonth, -3)
+				VAR Last3_End   = EOMONTH(StartOfThisMonth, -1)
+				
+				VAR Last6_Start = EDATE(StartOfThisMonth, -6)
+				VAR Last6_End   = EOMONTH(StartOfThisMonth, -1)
+				
+				VAR Result =
+				    UNION(
+				        -- MTD
+				        ADDCOLUMNS(
+				            CALENDAR(StartOfThisMonth, TodayDate),
+				            "Selection", "MTD",
+				            "SortOrder", 1
+				        ),
+				
+				        -- Last 3 Months
+				        ADDCOLUMNS(
+				            CALENDAR(Last3_Start, Last3_End),
+				            "Selection", "Last 3 Months",
+				            "SortOrder", 2
+				        ),
+				
+				        -- Last 6 Months
+				        ADDCOLUMNS(
+				            CALENDAR(Last6_Start, Last6_End),
+				            "Selection", "Last 6 Months",
+				            "SortOrder", 3
+				        ),
+				
+				        -- YTD
+				        ADDCOLUMNS(
+				            CALENDAR(StartOfThisYear, TodayDate),
+				            "Selection", "YTD",
+				            "SortOrder", 4
+				        )
+				    )
+				RETURN
+				Result
+				
+				```
+
+	annotation PBI_Id = e97c2e2c71e44da9b54ee13b32e228d5
+

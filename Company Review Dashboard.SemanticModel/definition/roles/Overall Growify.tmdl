@@ -1,0 +1,7 @@
+role 'Overall Growify'
+	modelPermission: read
+
+	tablePermission 'Teamwise Brands' = [Brand Team] IN {"Team 1","Team 2","Team 3","Team 4","Marketing"}
+
+	annotation PBI_Id = 5491c8829b2d4a5780f2f2b415d11994
+

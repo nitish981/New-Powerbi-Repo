@@ -1,0 +1,390 @@
+table Teamwise_revenue
+	lineageTag: 4d725a32-7f6d-47b6-a3a8-129509380980
+
+	measure 'Net Revenue' = [Net Incentive (Rev)] + [Net Retainer (Rev)]
+		lineageTag: 0f230bc2-e317-445b-80e1-ccd122dc53f6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Incentive (Rev)' = SUM(Teamwise_revenue[Incentive])/1.18
+		lineageTag: 5216f311-1069-47d3-81ad-1b650e1d63de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Retainer (Rev)' = SUM(Teamwise_revenue[Retainer])/1.18
+		lineageTag: 0a5ef6d5-c39d-42cb-aeec-a77c31da8d91
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d334a1bc-33e8-4e24-b603-739500adbe72
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Team
+		dataType: string
+		lineageTag: c8fb0773-464b-46ef-bc61-ab5a24f88ab8
+		summarizeBy: none
+		sourceColumn: Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		lineageTag: d30f0d04-d064-43b6-9fdf-acd0961353b5
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: c5db237f-ae53-4fd5-b55d-989bd5caf38a
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Retainer
+		dataType: double
+		lineageTag: b505bc9e-8106-4b42-9ba7-0bb291394fb0
+		summarizeBy: sum
+		sourceColumn: Retainer
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Website
+		dataType: int64
+		formatString: 0
+		lineageTag: 362a1e3d-4659-4e47-92dd-8bc95a77ace5
+		summarizeBy: sum
+		sourceColumn: Website
+
+		annotation SummarizationSetBy = Automatic
+
+	column Incentive
+		dataType: double
+		lineageTag: de9d48a8-f38a-4c78-8a02-293621fdcc22
+		summarizeBy: sum
+		sourceColumn: Incentive
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Total
+		dataType: double
+		lineageTag: b75631c9-89c5-4fb3-b32c-6adbf0d4a8c6
+		summarizeBy: sum
+		sourceColumn: Total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Addl Cost'
+		dataType: double
+		lineageTag: e2c2e39f-ee92-4d2b-b254-786090600a36
+		summarizeBy: sum
+		sourceColumn: Addl Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Exit Month'
+		dataType: string
+		lineageTag: 78fbb682-a279-435f-b5f6-b9d484c1c5ae
+		summarizeBy: none
+		sourceColumn: Exit Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Check Exit'
+		dataType: int64
+		formatString: 0
+		lineageTag: 71751d90-b78e-4bcf-894a-bebb7f4b2dd3
+		summarizeBy: sum
+		sourceColumn: Check Exit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retained Clients'
+		dataType: int64
+		formatString: 0
+		lineageTag: 40ce8071-ce78-45e8-b56a-1c7cfe3b4ce4
+		summarizeBy: sum
+		sourceColumn: Retained Clients
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retainer Deal'
+		dataType: double
+		lineageTag: 9a98b1cd-d8f3-48e8-807a-253560ec96ed
+		summarizeBy: sum
+		sourceColumn: Retainer Deal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Brand Name' = ```
+			
+			SWITCH ( TRUE(),
+			    CONTAINSSTRING ( Teamwise_revenue[Brand], "Drzya" ), "Drzya",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Mahima Mahajan" ), "Mahima Mahajan",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Tarun Tahalini" ), "Tarun Tahiliani",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Ridhi Mehra- Edge Fashion" ), "Ridhi Mehra",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Meena Bazaar" ), "Meena Bazaar",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shaira Fashion - Dubai" ), "Shaira Fashion Dubai",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Image International" ), "Image 1993",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Puneet Kapoor Label" ), "Puneet Kapoor",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Safaa" ), "Safaa World",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "H&N - Lint Clothing Pvt Ltd" ), "Hemant and Nandita",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Flirtatious - Shivaaye International" ), "Flirtatious",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Dusala - One Couture" ), "Dusala",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aisha Rao - ARDS Design" ), "Aisha Rao",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Gazal Gupta" ), "Gazal Gupta",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Limited Etd - NM Sports Fashion Concepts Pvt.Ltd." ), "Limited EDT",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "House of Deepthi" ), "House of Deepthi",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Samar Fashion - Chamee & Palak" ), "Chamee and Palak",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Soltee - Sulakshana Monga" ), "Sulakshana Monga",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Bairaas- Shivani Creation Pvt Ltd" ), "BairaasB",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Calling June - S.A.N. Intl Pvt. Ltd." ), "Calling June",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shahin Mannan- New" ), "Shahin Manan",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Neha Chopra - Haands Free" ), "Haandsfree",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sanam Lalwani" ), "Sanam Lalwani",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Mandira Wirk - Mandira Wirk Designs LLP" ), "Mandira Wirk",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Bunka Studio- Bunka Studio Pvt Ltd" ), "Bunka",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aneesh Agarwaal Design" ), "Aneesh Agarwal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Diya Rajvvir - J A Taxtiles" ), "Diyarajvvir",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sukriti and Aakriti - Shivaaye International" ), "Sukriti and Aakriti",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Horizon Exports & Imports - Koakh" ), "Koakh",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "GANPATI EXPOTS" ), "Ganpati Bridal Wear",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Toosh Kashmir" ), "Toosh Kashmir",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shikha Amish Jariwala - Shikha Mehta" ), "Shikha Mehta",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Leather Garden - Amazone Leather Pvt Ltd" ), "The Leather Garden",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aulyra Design Private Limited - Aulerth" ), "Aulerth",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "I Am Design" ), "I am Design",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "MEHAK MURPANA" ), "Mehak Murpana",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "SROTA PRET & COUTURE" ), "Srota",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Dimple Amani - KRU Ventures Ltd - (Jay)" ), "Dimple Amani",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Jewel Boutique - Preeti Mohan" ), "Preeti Mohan",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Radheya Apparels Pvt Ltd - Ribionwear" ), "Ribionwear",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Hazoorilal & Sons Jewellers Pvt Ltd" ), "Hazoorilal IND",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Gaurav Gupta" ), "Gaurav Gupta",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Anju Modi - Anjuman Brand Designs Pvt. Ltd." ), "Anju Modi",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Maison Shefali - SHEFALI JAIN" ), "Maison Shefali",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Art By Gayatri" ) || CONTAINSSTRING (  Teamwise_revenue[Brand], "ABG" ), "Art by Gayatri",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Gaia" ), "Gaia by Archie",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Mimamsaa" ), "Mimamsaa",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Melange" ), "Melange",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rari and Love" ), "Rari and Love",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Esha Koul" ), "Esha Koul",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Riyaasat" ), "Riyaasat",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Style Inn" ), "Style Inn",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Paarsh Atelier" ), "Paarsh Atelier",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Notebook" ), "Notebook",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Isha Gupta Tayal" ), "Isha Gupta Tayal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Studio Bageechaa" ), "Studio Bageecha",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Taassur" ), "Taassur",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "PH Project" ), "PH Project",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rachit Khanna" ), "Rachit Khanna",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shruti & Sancheti" ), "Shruti Sancheti",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Eli Bitton" ), "Eli Bitton",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rooh by Ridhimaa" ), "Rooh by Ridhimaa",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aparnaa Sarees" ), "Aparnaa Sarees",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Angad Singh" ), "Angad Singh Official",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Guldavari" ), "Guldavari",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "FEBo6" ), "FEBo6",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "KnotMeCute" ), "Knot Me Cute",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Chrkha" ), "Chrkha",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Itrh" ), "ITRH Official",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Krina Patel Couture - Krina Enterprise" ), "Krina Patel",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rainas" ), "Raina",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shukrana" ), "Shukrana by PK",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "ASH AMAIRA" ), "ASH AMAIRA",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Almas Tejani" ), "Almas Tejani",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Merakk" ), "Merakk",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Stokke" ), "Stokke",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sia Bridal" ), "Sia Bridal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Abbir & Nanki" ), "369 By Abir N Nanki",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Maitri - Varuna Verma" ), "Maitri",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "The Leather Tailors" ), "The Leather Tailors",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Raisin" ), "Raisin",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Amplify" ), "Amplify 43188",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sammsara" ), "Sammsara",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Ankita Dharman - New" ), "Ankita Dharman",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Dolly J Couture Private Limited" ), "DollyJ Studio",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Real designDesign Project- Son of Nobal" ), "Son Of A Noble",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Contemponari - Sahibtek Private Limited" ), "Contemponari",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Monika Nidhii" ), "Monika Nidhii",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aerohaven - Giridhar Home Furnishing" ), "Aerohaven",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Bridal Asia" ), "Bridal Asia",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "GANPATI EXPOTS" ), "Ganpati Bridal Wear",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Heritage Punjab - Harinder Pal Singh" ), "Heritage Punjab",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Bohera - Khem Chand Handicrafts" ), "Bohera",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Saltz and Sand" ), "Saltz n Sand",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Studio Love Letter - Maha Design Studios Pvt Ltd" ), "Studio Love Letter",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Gyans - N.K.G Enterprises" ), "Gyans",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Prose Stories - Prose Design House Pvt. Ltd." ), "Prose Stories",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shuvaa Enterprises - Sitarra Living" ), "Sitarra Living",
+			    CONTAINSSTRING ( Teamwise_revenue[Brand], "Prints By Radhika" ), "Prints By Radhika",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shah Style Inc" ), "Shah Style",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Dimple Amani" ), "Dimple Amani",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rohit Bal" ), "Rohit Bal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Pashmeen Trading" ), "Pashmeen",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Prints By Radhika - Radhika Rawat (Restarted)" ), "Prints By Radhika",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sanam Lalwani" ), "Sanam",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Utkarsh Mithas - Perte D'ego" ), "Perte D'ego",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Richa Ahluwalia - Shri Kumar Designs" ), "Richa Ahluwalia",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Nirmoha" ), "Nirmooha",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "House Of Atri LLP" ), "House of Atri",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sana Barreja" ), "Sana Barreja",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Republic Of Zoofari - Sonalika Social Development Society" ), "Republic Of Zoofari",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Moonray Lifestyle Private Limited" ), "Moonray",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Nuhh" ), "Nuhh",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Origin & Ode" ), "Origin And Ode",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Mukti & Kavita Casa LLP" ), "Mukti & Kavith Casa",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Zaveer International Private Limited-MMVM" ), "MMVM",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Mellowdrama" ), "Mellow Drama",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Silaakari" ), "Silakaari",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aispi India" ), "Aispi",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Begum Pret" ), "Begum Pret",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "The Whole Nine Yards" ), "TWNY",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Roza Pret" ), "Roza Pret",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Zamoraa" ), "Mukta Sabharwal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "No Grey Area" ), "No Grey Area",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Label IRIS - M/S Prabal Enterprises " ), "Label IRIS",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shikha Mehta" ), "Shikha Mehta",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Thr3Letter - Bunila" ), "Thr3Letter",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Minny Sandhu" ), "Minny Sandhu",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Nidhika Shekhar" ), "Nidhika Shekhar",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shantanu Goenka" ), "SHANTANU",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Artimen" ), "Artimen",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "East6" ), "Studio East6",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Study By Janak" ), "Study by Janak",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Zevar By Geeta" ), "Zevar by Geeta",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "House of Kopal - Saumya Kalwani" ), "House of Kopal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Lajjoo CC - Shashi Kapoor (Restarted)" ) || CONTAINSSTRING (  Teamwise_revenue[Brand], "Lajjoo CC - Shashi Kapoor" ), "Lajjoo C",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "M/s Cue Apparels Pvt Ltd - Rohan Gandhi/Rahul Khanna" ), "RGRK",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Dusha Amai - Abhishek Anil Tharwani (Soul & Co.)" ), "Dusha Amai",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sylk Clothing" ), "Sylk",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Akilah" ), "Akilah",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Drishti Chhabra" ), "Drishti Chhabra",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aadhrit Inc - Dhruv Vaish" ), "Dhruv Vaish",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Eurumme - Golden Tree Company" ), "Eurumme",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Nitika Gujral" )|| CONTAINSSTRING (  Teamwise_revenue[Brand], "Nitika Gujral" ), "Nitika Gujral",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Bhanuni" ), "Bhanuni by Jyoti",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Daga Label India" ), "Daga Label India",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Fine Silver Jewels" ), "Fine Silver Jewels",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "The Latest Labels Brands" ), "The Latest Labels",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Samvrih Clothing" ), "Samvrih",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Pluch Designs - Kiranpreet Kaur Walia" ), "Pluch Designs",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Suneet Verma Design Pvt Ltd" ), "Suneet Varma",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Athletifreak India Private Limited" ), "Athletifreak",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Panihari Fashion" ), "Panihari Fashion",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Shaza Lifestyle - GT Fashion PVT LTD" ), "Shaza",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Praneetha Ventures Private Limited - Kalatantu" ) || CONTAINSSTRING (  Teamwise_revenue[Brand],"Kalatantu"), "Kalatantu",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Mrs. G" ), "Mrs. G",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Zabella - Ridah Design Studio" ), "Zabella",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Etar - Nirali Jignish Chokhawala" ), "Etar",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Athletifreak LLC - Intl" ), "Athletifreak USA",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Antar Agni Clothing" ), "Antar Agni",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Payal Jain" ), "Payal Jain",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Pashmeen QA" ), "Pashmeen",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Future 101 - Raghuvendra Rathore" ), "Raghavendra Rathore",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Swish" ), "Swish",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Arya Giri" ), "Arya Giri",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Studio By Agni" ), "Studio by Agni",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Saundh Retail Private Limited" ), "Saundh",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sandhya Shah" ), "Sandhya Shah",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Aarnella" ), "Aarnelle",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "AFEW" ), "AFEW",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Payal Jain" ), "Payal Jain",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Payal Singhal" ), "Payal Singhal",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rohan Gandhi/Rahul Khanna - Cue Apparels Pvt Ltd" ), "RGRK",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Ladies of Leisure" ), "Ladies of Leisure",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Outhouse" ), "Outhouse Jewellery",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Raji Ramniq" ), "Raji Ramniq",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sarab" ), "Sarab Khanijou",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Phutara" ), "Phutara Vastra",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Matsya" ), "Matsya",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Monture" ), "Monture",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Ikkis" ), "Ikkis",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Junn" ), "Junn",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Sapkaaz" ), "Sapkaaz",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Hyskyn" ), "Hyskyn",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Dareaab" ), "Dareaab",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Varun Bahl" ), "Varun Bahl",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rahul Mishra" ), "Rahul Mishra",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Tifara" ), "Tifara",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "AK-OK" ), "AKOK",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Samant" ), "Samant Chauhan",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Rinessa" ), "Rinessa",
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Katha" ), "Kathatale", 
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Selectives" ), "Shop Selective", 
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Perona" ), "Perona", 
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Gavins" ), "Adyaaye", 
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "AUM" ), "AUM", 
+			    CONTAINSSTRING (  Teamwise_revenue[Brand], "Gunjan" ), "Gunjan Gupta",   
+			   
+			     Teamwise_revenue[Brand]
+			)
+			```
+		lineageTag: b218a097-7ad4-4f91-8721-5bd08004b8cb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retainer Deal (New)'
+		dataType: double
+		lineageTag: cffaa26f-0866-4d78-a0d2-d1283c273a79
+		summarizeBy: sum
+		sourceColumn: Retainer Deal (New)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Difference
+		dataType: string
+		lineageTag: 89260a0b-3c94-4fa1-91da-74ff4a702684
+		summarizeBy: none
+		sourceColumn: Difference
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column1
+		dataType: string
+		lineageTag: 419f49ee-9e76-4761-b24e-7c6317e1adfa
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Teamwise_revenue = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1xZ6AmgAHCweipcNThU5tZOi1-s_LokRV8y6IGPKdMZk/edit?gid=1548167204#gid=1548167204"),
+				    Teamwise_revenue_Table = Source{[name="Teamwise_revenue",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Teamwise_revenue_Table, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Team", type text}, {"Brand", type text}, {"Status", type text}, {"Retainer", type number}, {"Website", Int64.Type}, {"Incentive", type number}, {"Total", type number}, {"SEO", Int64.Type}, {"SMM", Int64.Type}, {"Net Website", Int64.Type}, {"Direct Cost", type number}, {"SEO Cost", type number}, {"SMM Cost", type number}, {"Sales Cost", type any}, {"Services", type text}, {"Service Count", Int64.Type}, {"Common", type number}, {"Addl Cost", type number}, {"Exit Month", type text}, {"Check Exit", Int64.Type}, {"Retained Clients", Int64.Type}, {"Retainer Deal", type number}, {"", type any}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"SEO", "SMM", "Net Website", "Direct Cost", "SEO Cost", "SMM Cost", "Sales Cost", "Services", "Service Count", "Common"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed Columns", {{"Retainer Deal (New)", type number}})
+				in
+				    #"Changed column type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
